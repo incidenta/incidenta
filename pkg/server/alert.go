@@ -4,10 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/incidenta/incidenta/pkg/api"
-
 	"github.com/gorilla/mux"
 
+	"github.com/incidenta/incidenta/pkg/api"
 	"github.com/incidenta/incidenta/pkg/models"
 )
 

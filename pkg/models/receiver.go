@@ -7,7 +7,6 @@ import (
 	"xorm.io/builder"
 
 	"github.com/incidenta/incidenta/pkg/api"
-
 	"github.com/incidenta/incidenta/pkg/timeutil"
 )
 
