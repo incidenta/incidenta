@@ -4,17 +4,16 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
-	"github.com/incidenta/incidenta/handler/api"
-	"github.com/incidenta/incidenta/handler/health"
-
-	"github.com/incidenta/incidenta/cmd/incidenta/config"
-	"github.com/incidenta/incidenta/server"
-	"github.com/incidenta/incidenta/signal"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
-	"golang.org/x/sync/errgroup"
+
+	"github.com/incidenta/incidenta/pkg/config"
+	"github.com/incidenta/incidenta/pkg/models"
+	"github.com/incidenta/incidenta/pkg/server"
 )
 
 var (
@@ -24,7 +23,7 @@ var (
 func main() {
 	flag.Parse()
 
-	godotenv.Load(*envFile)
+	_ = godotenv.Load(*envFile)
 
 	cfg, err := config.Environ()
 	if err != nil {
@@ -33,37 +32,35 @@ func main() {
 	}
 
 	initLogging(cfg)
-	ctx := signal.WithContext(context.Background())
+
+	logrus.Infof("Starting incidenta on %s...", cfg.Server.Addr)
 
 	if logrus.IsLevelEnabled(logrus.TraceLevel) {
 		fmt.Println(cfg.String())
 	}
 
-	s := server.Server{
-		Addr:    cfg.Server.Addr,
-		Handler: handler(),
+	if err := models.NewEngine(context.Background(), cfg.Database); err != nil {
+		logrus.Fatal(err)
 	}
 
-	g := errgroup.Group{}
-	g.Go(func() error {
-		logrus.WithFields(
-			logrus.Fields{
-				"url": cfg.Server.Addr,
-			},
-		).Infoln("starting the http server")
-		return s.ListenAndServe(ctx)
-	})
+	s := server.New(cfg.Server)
 
-	if err := g.Wait(); err != nil {
-		logrus.WithError(err).Fatalln("program terminated")
-	}
-}
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 
-func handler() http.Handler {
-	mux := http.NewServeMux()
-	mux.Handle("/api", api.Handler())
-	mux.Handle("/health", health.Handler())
-	return mux
+	go func() {
+		err := s.Run()
+		if err != nil {
+			logrus.Fatal(err)
+		}
+		os.Exit(0)
+	}()
+
+	<-stop
+
+	logrus.Info("Shutting down")
+
+	models.Close()
 }
 
 func initLogging(c config.Config) {

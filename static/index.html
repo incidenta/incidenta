@@ -1,0 +1,33 @@
+<html lang="en" ng-app="myApp">
+<head>
+    <title>Incidenta</title>
+    <meta name="author" content="Lev Aminov <leoderoko@gmail.com>">
+    <meta name="description" content="Incidenta">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.21/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body ng-cloak>
+<md-content layout="column">
+    <div layout="column" layout-fill="">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 md-truncate="" flex=""><a href="/">Incidenta</a> <sup>&alpha;</sup></h2>
+            </div>
+        </md-toolbar>
+        <md-content>
+            <ng-view></ng-view>
+        </md-content>
+    </div>
+</md-content>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular-route.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular-animate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular-aria.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.21/angular-material.min.js"></script>
+<script src="js/app.js?v=1"></script>
+<script src="js/services.js?v=1"></script>
+<script src="js/controllers.js?v=1"></script>
+</body>
+</html>

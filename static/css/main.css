@@ -1,0 +1,44 @@
+.doc-content {
+    margin: 16px;
+    box-sizing: border-box;
+
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: normal;
+    line-height: 16px;
+}
+
+div.md-dialog-content-body {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: normal;
+    line-height: 16px;
+}
+
+md-toolbar.md-site-toolbar-theme {
+    background-color: rgb(245,245,245);
+    color: rgba(0,0,0,0.87);
+
+    transition-duration: .5s;
+    transition-timing-function: cubic-bezier(.35,0,.25,1);
+    transition-property: background-color,fill,color;
+
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.14),
+    0 0 2px 2px rgba(0, 0, 0, 0.098),
+    0 0 5px 1px rgba(0, 0, 0, 0.084);
+}
+
+md-icon {
+    margin-top: -3px;
+    color: rgb(63,81,181) !important;
+}
+
+md-icon.locked {
+    margin-top: -2px;
+    color: rgb(199, 199, 199) !important;
+}
+
+md-icon.success {
+    margin-top: -2px;
+    color: rgb(0, 199, 82) !important;
+}
