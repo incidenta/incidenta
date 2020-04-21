@@ -7,7 +7,6 @@ import (
 type Snooze struct {
 	ID           int64     `json:"id"`
 	AlertID      int64     `json:"alert_id" validate:"required"`
-	Alert        *Alert    `json:"alert"`
 	Username     string    `json:"username" validate:"required"`
 	DeadlineUnix time.Time `json:"deadline_at" validate:"required"`
 
