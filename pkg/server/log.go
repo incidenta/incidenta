@@ -23,7 +23,7 @@ func (h *HTTPServer) LogGetRequest(_ http.ResponseWriter, r *http.Request) Respo
 	alertLogIDRaw := vars["log_id"]
 	alertLogID, err := strconv.ParseInt(alertLogIDRaw, 10, 64)
 	if err != nil {
-		return Error(400, "Validation error", err)
+		return ValidationError(err)
 	}
 
 	al, err := models.GetLogByID(alertLogID)
@@ -31,7 +31,7 @@ func (h *HTTPServer) LogGetRequest(_ http.ResponseWriter, r *http.Request) Respo
 		if models.IsErrLogNotExist(err) {
 			return Error(404, "Not Found", nil)
 		}
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	return JSON(200, al.APIFormat())
@@ -51,7 +51,7 @@ func (h *HTTPServer) LogDeleteRequest(_ http.ResponseWriter, r *http.Request) Re
 	alertLogIDRaw := vars["log_id"]
 	alertLogID, err := strconv.ParseInt(alertLogIDRaw, 10, 64)
 	if err != nil {
-		return Error(400, "Validation error", err)
+		return ValidationError(err)
 	}
 
 	al, err := models.GetLogByID(alertLogID)
@@ -59,12 +59,12 @@ func (h *HTTPServer) LogDeleteRequest(_ http.ResponseWriter, r *http.Request) Re
 		if models.IsErrLogNotExist(err) {
 			return Error(404, "Not Found", nil)
 		}
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	err = models.DeleteLog(al)
 	if err != nil {
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	return Empty(204)

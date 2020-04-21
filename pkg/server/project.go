@@ -24,7 +24,7 @@ func (h *HTTPServer) ProjectListRequest(_ http.ResponseWriter, r *http.Request) 
 	opts := &models.SearchProjectsOptions{}
 	projects, _, err := models.SearchProjects(opts)
 	if err != nil {
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 	var apiProjects []*apiv1.Project
 	for _, project := range projects {
@@ -49,7 +49,7 @@ func (h *HTTPServer) ProjectCreateRequest(_ http.ResponseWriter, r *http.Request
 	}
 
 	if err := validator.Validate(opts); err != nil {
-		return Error(400, "Validation failed", err)
+		return ValidationError(err)
 	}
 
 	p := &models.Project{
@@ -68,7 +68,7 @@ func (h *HTTPServer) ProjectCreateRequest(_ http.ResponseWriter, r *http.Request
 		if models.IsErrProjectAlreadyExist(err) {
 			return Error(400, "Already exists", err)
 		}
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	return JSON(201, p.APIFormat())
@@ -87,7 +87,7 @@ func (h *HTTPServer) ProjectGetRequest(_ http.ResponseWriter, r *http.Request) R
 	vars := mux.Vars(r)
 	id, err := strconv.ParseInt(vars["project_id"], 10, 64)
 	if err != nil {
-		return Error(400, "Validation error", err)
+		return ValidationError(err)
 	}
 
 	p, err := models.GetProjectByID(id)
@@ -95,7 +95,7 @@ func (h *HTTPServer) ProjectGetRequest(_ http.ResponseWriter, r *http.Request) R
 		if models.IsErrProjectNotExist(err) {
 			return Error(404, "Not Found", nil)
 		}
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	return JSON(200, p.APIFormat())
@@ -114,7 +114,7 @@ func (h *HTTPServer) ProjectEditRequest(_ http.ResponseWriter, r *http.Request) 
 	vars := mux.Vars(r)
 	id, err := strconv.ParseInt(vars["project_id"], 10, 64)
 	if err != nil {
-		return Error(400, "Validation error", err)
+		return ValidationError(err)
 	}
 
 	opts := &apiv1.ProjectEditOptions{}
@@ -122,7 +122,7 @@ func (h *HTTPServer) ProjectEditRequest(_ http.ResponseWriter, r *http.Request) 
 		return Error(400, "Failed to decode request", err)
 	}
 	if err := validator.Validate(opts); err != nil {
-		return Error(400, "Validation failed", err)
+		return ValidationError(err)
 	}
 
 	ar, err := models.GetProjectByID(id)
@@ -130,7 +130,7 @@ func (h *HTTPServer) ProjectEditRequest(_ http.ResponseWriter, r *http.Request) 
 		if models.IsErrProjectNotExist(err) {
 			return Error(404, "Not Found", nil)
 		}
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	if opts.Name != nil {
@@ -166,7 +166,7 @@ func (h *HTTPServer) ProjectEditRequest(_ http.ResponseWriter, r *http.Request) 
 		if models.IsErrProjectAlreadyExist(err) {
 			return Error(400, "Already exists", err)
 		}
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	return JSON(200, ar)
@@ -185,7 +185,7 @@ func (h *HTTPServer) ProjectDeleteRequest(_ http.ResponseWriter, r *http.Request
 	vars := mux.Vars(r)
 	id, err := strconv.ParseInt(vars["project_id"], 10, 64)
 	if err != nil {
-		return Error(400, "Validation error", err)
+		return ValidationError(err)
 	}
 
 	p, err := models.GetProjectByID(id)
@@ -193,12 +193,12 @@ func (h *HTTPServer) ProjectDeleteRequest(_ http.ResponseWriter, r *http.Request
 		if models.IsErrProjectNotExist(err) {
 			return Error(404, "Not Found", nil)
 		}
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	err = models.DeleteProject(p)
 	if err != nil {
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	return Empty(204)
@@ -216,7 +216,7 @@ func (h *HTTPServer) ProjectAlertsRequest(_ http.ResponseWriter, r *http.Request
 	vars := mux.Vars(r)
 	id, err := strconv.ParseInt(vars["project_id"], 10, 64)
 	if err != nil {
-		return Error(400, "Validation error", err)
+		return ValidationError(err)
 	}
 
 	opts := &models.SearchAlertsOptions{
@@ -224,7 +224,7 @@ func (h *HTTPServer) ProjectAlertsRequest(_ http.ResponseWriter, r *http.Request
 	}
 	alerts, _, err := models.SearchAlerts(opts)
 	if err != nil {
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	var apiAlerts []*apiv1.Alert

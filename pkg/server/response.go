@@ -46,17 +46,22 @@ func (r *NormalResponse) Header(key, value string) *NormalResponse {
 	return r
 }
 
-// Empty пустой ответ
 func Empty(status int) *NormalResponse {
 	return Respond(status, nil)
 }
 
-// JSON ответ с JSON документом
 func JSON(status int, body interface{}) *NormalResponse {
 	return Respond(status, body).Header("Content-Type", "application/json")
 }
 
-// Error ответ с ошибкой
+func ValidationError(err error) *NormalResponse {
+	return Error(400, "Validation error", err)
+}
+
+func InternalError(err error) *NormalResponse {
+	return Error(500, "Internal Server Error", err)
+}
+
 func Error(status int, code string, err error) *NormalResponse {
 	data := make(map[string]interface{})
 

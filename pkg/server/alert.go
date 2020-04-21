@@ -21,7 +21,7 @@ func (h *HTTPServer) AlertListRequest(_ http.ResponseWriter, r *http.Request) Re
 	opts := &models.SearchAlertsOptions{}
 	alerts, _, err := models.SearchAlerts(opts)
 	if err != nil {
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	var apiAlerts []*apiv1.Alert
@@ -45,7 +45,7 @@ func (h *HTTPServer) AlertGetRequest(_ http.ResponseWriter, r *http.Request) Res
 	vars := mux.Vars(r)
 	id, err := strconv.ParseInt(vars["alert_id"], 10, 64)
 	if err != nil {
-		return Error(400, "Validation error", err)
+		return ValidationError(err)
 	}
 
 	ar, err := models.GetAlertByID(id)
@@ -53,7 +53,7 @@ func (h *HTTPServer) AlertGetRequest(_ http.ResponseWriter, r *http.Request) Res
 		if models.IsErrAlertNotExist(err) {
 			return Error(404, "Not Found", nil)
 		}
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	return JSON(200, ar.APIFormat())
@@ -72,7 +72,7 @@ func (h *HTTPServer) AlertDeleteRequest(_ http.ResponseWriter, r *http.Request) 
 	vars := mux.Vars(r)
 	id, err := strconv.ParseInt(vars["alert_id"], 10, 64)
 	if err != nil {
-		return Error(400, "Validation error", err)
+		return ValidationError(err)
 	}
 
 	a, err := models.GetAlertByID(id)
@@ -80,12 +80,12 @@ func (h *HTTPServer) AlertDeleteRequest(_ http.ResponseWriter, r *http.Request) 
 		if models.IsErrAlertNotExist(err) {
 			return Error(404, "Not Found", nil)
 		}
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	err = models.DeleteAlert(a)
 	if err != nil {
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	return Empty(204)
@@ -103,14 +103,14 @@ func (h *HTTPServer) AlertLogsRequest(_ http.ResponseWriter, r *http.Request) Re
 	vars := mux.Vars(r)
 	id, err := strconv.ParseInt(vars["alert_id"], 10, 64)
 	if err != nil {
-		return Error(400, "Validation error", err)
+		return ValidationError(err)
 	}
 
 	logs, _, err := models.SearchLogs(&models.SearchLogsOptions{
 		AlertID: id,
 	})
 	if err != nil {
-		return Error(500, "Internal Server Error", err)
+		return InternalError(err)
 	}
 
 	var apiLogs []*apiv1.Log
