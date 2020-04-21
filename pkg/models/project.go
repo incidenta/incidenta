@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/incidenta/incidenta/pkg/generate"
-
 	"xorm.io/builder"
 
 	apiv1 "github.com/incidenta/incidenta/pkg/api/v1"
+	"github.com/incidenta/incidenta/pkg/generate"
 	"github.com/incidenta/incidenta/pkg/timeutil"
 )
 
