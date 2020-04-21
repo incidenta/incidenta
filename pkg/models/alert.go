@@ -10,12 +10,12 @@ import (
 )
 
 type Alert struct {
-	ID         int64 `xorm:"pk autoincr"`
-	Name       string
-	ReceiverID int64
-	Receiver   *Receiver `xorm:"-"`
-	Hash       string    `xorm:"INDEX NOT NULL"`
-	Body       string
+	ID          int64 `xorm:"pk autoincr"`
+	Name        string
+	ReceiverID  int64
+	Receiver    *Receiver `xorm:"-"`
+	Fingerprint string    `xorm:"INDEX NOT NULL"`
+	Body        string
 
 	CreatedUnix timeutil.TimeStamp `xorm:"INDEX created"`
 	UpdatedUnix timeutil.TimeStamp `xorm:"INDEX updated"`
@@ -26,7 +26,7 @@ func (a *Alert) APIFormat() *api.Alert {
 		ID:          a.ID,
 		Name:        a.Name,
 		ReceiverID:  a.ReceiverID,
-		Hash:        a.Hash,
+		Fingerprint: a.Fingerprint,
 		Body:        a.Body,
 		CreatedUnix: a.CreatedUnix.AsTime(),
 		UpdatedUnix: a.UpdatedUnix.AsTime(),
