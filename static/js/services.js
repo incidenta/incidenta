@@ -1,9 +1,9 @@
 angular.module('myApp.services', [])
 
     .service('API', function ($http) {
-        this.getReceivers = function() {
+        this.getProjects = function() {
             return $http.get(
-                '/v1/receivers'
+                '/v1/projects'
             );
         };
     });

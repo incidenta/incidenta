@@ -2,13 +2,13 @@ angular.module('myApp.controllers', [])
 
     .controller('HomeController', function ($scope, API) {
         $scope.loaded = false;
-        $scope.receivers = [];
+        $scope.projects = [];
 
         $scope.start = function() {
-            API.getReceivers()
+            API.getProjects()
                 .then(function (result) {
                     $scope.loaded = true;
-                    $scope.receivers = result.data;
+                    $scope.projects = result.data;
                 });
         }
 
