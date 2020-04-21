@@ -69,7 +69,7 @@ func DeleteReceiver(r *Receiver) error {
 	if err := sess.Begin(); err != nil {
 		return err
 	}
-	if _, err := x.ID(r.ID).Delete(new(Receiver)); err != nil {
+	if _, err := sess.ID(r.ID).Delete(new(Receiver)); err != nil {
 		return err
 	}
 	return sess.Commit()

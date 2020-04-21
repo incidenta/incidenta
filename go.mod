@@ -12,6 +12,7 @@ require (
 	github.com/prometheus/alertmanager v0.20.0
 	github.com/prometheus/client_golang v1.2.1
 	github.com/sirupsen/logrus v1.4.2
+	github.com/stretchr/testify v1.5.1
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect
 	gopkg.in/yaml.v2 v2.2.8
 	xorm.io/builder v0.3.7

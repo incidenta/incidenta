@@ -63,7 +63,7 @@ func DeleteAlert(a *Alert) error {
 	if err := sess.Begin(); err != nil {
 		return err
 	}
-	if _, err := x.ID(a.ID).Delete(new(Alert)); err != nil {
+	if _, err := sess.ID(a.ID).Delete(new(Alert)); err != nil {
 		return err
 	}
 	return sess.Commit()

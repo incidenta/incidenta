@@ -32,12 +32,12 @@ type swaggerReceiverCreateOptions struct {
 
 type ReceiverCreateOptions struct {
 	// required: true
-	Name        string `json:"name" required:"true"`
+	Name        string `json:"name" validate:"required"`
 	Description string `json:"description"`
 	// required: true
-	SlackURL string `json:"slack_url" required:"true"`
+	SlackURL string `json:"slack_url" validate:"required"`
 	// required: true
-	TemplateID    int64 `json:"template_id" required:"true"`
+	TemplateID    int64 `json:"template_id" validate:"required"`
 	AckButton     bool  `json:"ack_button"`
 	ResolveButton bool  `json:"resolve_button"`
 	SnoozeButton  bool  `json:"snooze_button"`

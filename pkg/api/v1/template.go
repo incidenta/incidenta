@@ -29,9 +29,9 @@ type swaggerTemplateCreateOptions struct {
 
 type TemplateCreateOptions struct {
 	// required: true
-	Name string `json:"name" required:"true"`
+	Name string `json:"name" validate:"required"`
 	// required: true
-	Content string `json:"content" required:"true"`
+	Content string `json:"content" validate:"required"`
 }
 
 // swagger:parameters EditTemplate
@@ -78,7 +78,7 @@ func (t *Templates) Create(opts *TemplateCreateOptions) (*Template, *Response, e
 	return template, resp, err
 }
 
-func (t *Templates) Edit(id int64, opts *TemplateCreateOptions) (*Template, *Response, error) {
+func (t *Templates) Edit(id int64, opts *TemplateEditOptions) (*Template, *Response, error) {
 	req, err := t.c.newRequest(http.MethodPost, fmt.Sprintf("v1/template/%d", id), opts)
 	if err != nil {
 		return nil, nil, err
@@ -86,4 +86,14 @@ func (t *Templates) Edit(id int64, opts *TemplateCreateOptions) (*Template, *Res
 	template := &Template{}
 	resp, err := t.c.doRequest(req, template)
 	return template, resp, err
+}
+
+func (t *Templates) List() ([]*Template, *Response, error) {
+	req, err := t.c.newRequest(http.MethodGet, "v1/templates", nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	var templates []*Template
+	resp, err := t.c.doRequest(req, &templates)
+	return templates, resp, err
 }

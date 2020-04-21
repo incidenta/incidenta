@@ -406,9 +406,9 @@
           "format": "date-time",
           "x-go-name": "CreatedUnix"
         },
-        "hash": {
+        "fingerprint": {
           "type": "string",
-          "x-go-name": "Hash"
+          "x-go-name": "Fingerprint"
         },
         "id": {
           "type": "integer",
@@ -430,7 +430,7 @@
           "x-go-name": "UpdatedUnix"
         }
       },
-      "x-go-package": "github.com/incidenta/incidenta/pkg/api"
+      "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
     },
     "Alerts": {
       "type": "array",
@@ -485,7 +485,7 @@
           "x-go-name": "Username"
         }
       },
-      "x-go-package": "github.com/incidenta/incidenta/pkg/api"
+      "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
     },
     "Message": {
       "type": "object",
@@ -575,7 +575,7 @@
           "x-go-name": "UpdatedUnix"
         }
       },
-      "x-go-package": "github.com/incidenta/incidenta/pkg/api"
+      "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
     },
     "ReceiverCreateOptions": {
       "type": "object",
@@ -615,7 +615,7 @@
           "x-go-name": "TemplateID"
         }
       },
-      "x-go-package": "github.com/incidenta/incidenta/pkg/api"
+      "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
     },
     "ReceiverEditOptions": {
       "type": "object",
@@ -650,7 +650,7 @@
           "x-go-name": "TemplateID"
         }
       },
-      "x-go-package": "github.com/incidenta/incidenta/pkg/api"
+      "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
     },
     "Template": {
       "type": "object",
@@ -679,7 +679,7 @@
           "x-go-name": "UpdatedUnix"
         }
       },
-      "x-go-package": "github.com/incidenta/incidenta/pkg/api"
+      "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
     },
     "TemplateCreateOptions": {
       "type": "object",
@@ -697,7 +697,7 @@
           "x-go-name": "Name"
         }
       },
-      "x-go-package": "github.com/incidenta/incidenta/pkg/api"
+      "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
     },
     "TemplateEditOptions": {
       "type": "object",
@@ -711,7 +711,7 @@
           "x-go-name": "Name"
         }
       },
-      "x-go-package": "github.com/incidenta/incidenta/pkg/api"
+      "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
     }
   },
   "responses": {

@@ -53,7 +53,7 @@ func DeleteLog(l *Log) error {
 	if err := sess.Begin(); err != nil {
 		return err
 	}
-	if _, err := x.ID(l.ID).Delete(new(Log)); err != nil {
+	if _, err := sess.ID(l.ID).Delete(new(Log)); err != nil {
 		return err
 	}
 	return sess.Commit()

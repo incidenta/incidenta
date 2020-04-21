@@ -62,7 +62,7 @@ func DeleteTemplate(t *Template) error {
 	if err := sess.Begin(); err != nil {
 		return err
 	}
-	if _, err := x.ID(t.ID).Delete(new(Template)); err != nil {
+	if _, err := sess.ID(t.ID).Delete(new(Template)); err != nil {
 		return err
 	}
 	return sess.Commit()

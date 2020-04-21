@@ -6,10 +6,10 @@ import (
 
 type Snooze struct {
 	ID           int64     `json:"id"`
-	AlertID      int64     `json:"alert_id" required:"true"`
+	AlertID      int64     `json:"alert_id" validate:"required"`
 	Alert        *Alert    `json:"alert"`
-	Username     string    `json:"username" required:"true"`
-	DeadlineUnix time.Time `json:"deadline_at" required:"true"`
+	Username     string    `json:"username" validate:"required"`
+	DeadlineUnix time.Time `json:"deadline_at" validate:"required"`
 
 	CreatedUnix time.Time `json:"created_at"`
 	UpdatedUnix time.Time `json:"updated_at"`
