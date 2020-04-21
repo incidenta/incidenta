@@ -6,7 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/incidenta/incidenta/pkg/api"
+	apiv1 "github.com/incidenta/incidenta/pkg/api/v1"
 	"github.com/incidenta/incidenta/pkg/models"
 )
 
@@ -24,7 +24,7 @@ func (h *HTTPServer) AlertListRequest(_ http.ResponseWriter, r *http.Request) Re
 		return Error(500, "Internal Server Error", err)
 	}
 
-	var apiAlerts []*api.Alert
+	var apiAlerts []*apiv1.Alert
 	for _, alert := range alerts {
 		apiAlerts = append(apiAlerts, alert.APIFormat())
 	}
@@ -113,7 +113,7 @@ func (h *HTTPServer) AlertLogsRequest(_ http.ResponseWriter, r *http.Request) Re
 		return Error(500, "Internal Server Error", err)
 	}
 
-	var apiLogs []*api.Log
+	var apiLogs []*apiv1.Log
 	for _, log := range logs {
 		apiLogs = append(apiLogs, log.APIFormat())
 	}

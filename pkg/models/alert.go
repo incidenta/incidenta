@@ -5,7 +5,7 @@ import (
 
 	"xorm.io/builder"
 
-	"github.com/incidenta/incidenta/pkg/api"
+	apiv1 "github.com/incidenta/incidenta/pkg/api/v1"
 	"github.com/incidenta/incidenta/pkg/timeutil"
 )
 
@@ -21,8 +21,8 @@ type Alert struct {
 	UpdatedUnix timeutil.TimeStamp `xorm:"INDEX updated"`
 }
 
-func (a *Alert) APIFormat() *api.Alert {
-	return &api.Alert{
+func (a *Alert) APIFormat() *apiv1.Alert {
+	return &apiv1.Alert{
 		ID:          a.ID,
 		Name:        a.Name,
 		ReceiverID:  a.ReceiverID,

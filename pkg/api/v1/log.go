@@ -1,4 +1,4 @@
-package api
+package v1
 
 import (
 	"time"
@@ -19,4 +19,8 @@ type Log struct {
 	Comment     string    `json:"comment"`
 	CreatedUnix time.Time `json:"created_at"`
 	UpdatedUnix time.Time `json:"updated_at"`
+}
+
+type Logs struct {
+	c *Client
 }

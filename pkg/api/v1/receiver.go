@@ -1,4 +1,4 @@
-package api
+package v1
 
 import (
 	"time"
@@ -58,4 +58,8 @@ type ReceiverEditOptions struct {
 	AckButton     *bool   `json:"ack_button"`
 	ResolveButton *bool   `json:"resolve_button"`
 	SnoozeButton  *bool   `json:"snooze_button"`
+}
+
+type Receivers struct {
+	c *Client
 }

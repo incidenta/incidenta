@@ -7,7 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/incidenta/incidenta/pkg/api"
+	apiv1 "github.com/incidenta/incidenta/pkg/api/v1"
 	"github.com/incidenta/incidenta/pkg/models"
 	"github.com/incidenta/incidenta/pkg/timeutil"
 	"github.com/incidenta/incidenta/pkg/validator"
@@ -26,7 +26,7 @@ func (h *HTTPServer) ReceiverListRequest(_ http.ResponseWriter, r *http.Request)
 	if err != nil {
 		return Error(500, "Internal Server Error", err)
 	}
-	var apiReceivers []*api.Receiver
+	var apiReceivers []*apiv1.Receiver
 	for _, receiver := range receivers {
 		apiReceivers = append(apiReceivers, receiver.APIFormat())
 	}
@@ -42,7 +42,7 @@ func (h *HTTPServer) ReceiverListRequest(_ http.ResponseWriter, r *http.Request)
 // 		400: GenericError
 // 		500: GenericError
 func (h *HTTPServer) ReceiverCreateRequest(_ http.ResponseWriter, r *http.Request) Response {
-	opts := &api.ReceiverCreateOptions{}
+	opts := &apiv1.ReceiverCreateOptions{}
 	if err := json.NewDecoder(r.Body).Decode(opts); err != nil {
 		return Error(400, "Failed to decode request", err)
 	}
@@ -116,7 +116,7 @@ func (h *HTTPServer) ReceiverEditRequest(_ http.ResponseWriter, r *http.Request)
 		return Error(400, "Validation error", err)
 	}
 
-	opts := &api.ReceiverEditOptions{}
+	opts := &apiv1.ReceiverEditOptions{}
 	if err := json.NewDecoder(r.Body).Decode(opts); err != nil {
 		return Error(400, "Failed to decode request", err)
 	}
@@ -226,7 +226,7 @@ func (h *HTTPServer) ReceiverAlertsRequest(_ http.ResponseWriter, r *http.Reques
 		return Error(500, "Internal Server Error", err)
 	}
 
-	var apiAlerts []*api.Alert
+	var apiAlerts []*apiv1.Alert
 	for _, alert := range alerts {
 		apiAlerts = append(apiAlerts, alert.APIFormat())
 	}

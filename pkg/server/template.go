@@ -7,7 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/incidenta/incidenta/pkg/api"
+	apiv1 "github.com/incidenta/incidenta/pkg/api/v1"
 	"github.com/incidenta/incidenta/pkg/models"
 	"github.com/incidenta/incidenta/pkg/validator"
 )
@@ -18,7 +18,7 @@ func (h *HTTPServer) TemplateListRequest(_ http.ResponseWriter, r *http.Request)
 	if err != nil {
 		return Error(500, "Internal Server Error", err)
 	}
-	var apiTemplates []*api.Template
+	var apiTemplates []*apiv1.Template
 	for _, template := range templates {
 		apiTemplates = append(apiTemplates, template.APIFormat(false))
 	}
@@ -73,7 +73,7 @@ func (h *HTTPServer) TemplateEditRequest(_ http.ResponseWriter, r *http.Request)
 		return Error(400, "Validation error", err)
 	}
 
-	opts := &api.TemplateEditOptions{}
+	opts := &apiv1.TemplateEditOptions{}
 	if err := json.NewDecoder(r.Body).Decode(opts); err != nil {
 		return Error(400, "Failed to decode request", err)
 	}
@@ -109,7 +109,7 @@ func (h *HTTPServer) TemplateEditRequest(_ http.ResponseWriter, r *http.Request)
 }
 
 func (h *HTTPServer) TemplateCreateRequest(_ http.ResponseWriter, r *http.Request) Response {
-	opts := &api.TemplateCreateOptions{}
+	opts := &apiv1.TemplateCreateOptions{}
 	if err := json.NewDecoder(r.Body).Decode(opts); err != nil {
 		return Error(400, "Failed to decode request", err)
 	}

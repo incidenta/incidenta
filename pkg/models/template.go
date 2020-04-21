@@ -6,7 +6,7 @@ import (
 
 	"xorm.io/builder"
 
-	"github.com/incidenta/incidenta/pkg/api"
+	apiv1 "github.com/incidenta/incidenta/pkg/api/v1"
 	"github.com/incidenta/incidenta/pkg/timeutil"
 )
 
@@ -19,8 +19,8 @@ type Template struct {
 	UpdatedUnix timeutil.TimeStamp `xorm:"INDEX updated"`
 }
 
-func (t *Template) APIFormat(withContent bool) *api.Template {
-	template := &api.Template{
+func (t *Template) APIFormat(withContent bool) *apiv1.Template {
+	template := &apiv1.Template{
 		ID:          t.ID,
 		Name:        t.Name,
 		CreatedUnix: t.CreatedUnix.AsTime(),

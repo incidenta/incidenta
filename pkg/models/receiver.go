@@ -6,7 +6,7 @@ import (
 
 	"xorm.io/builder"
 
-	"github.com/incidenta/incidenta/pkg/api"
+	apiv1 "github.com/incidenta/incidenta/pkg/api/v1"
 	"github.com/incidenta/incidenta/pkg/timeutil"
 )
 
@@ -127,8 +127,8 @@ func CreateReceiver(r *Receiver) error {
 	return sess.Commit()
 }
 
-func (r *Receiver) APIFormat() *api.Receiver {
-	return &api.Receiver{
+func (r *Receiver) APIFormat() *apiv1.Receiver {
+	return &apiv1.Receiver{
 		ID:            r.ID,
 		Name:          r.Name,
 		Description:   r.Description,
