@@ -28,8 +28,9 @@ type Project struct {
 }
 
 type ErrProjectNotExist struct {
-	ID  int64
-	UID string
+	ID   int64
+	UID  string
+	Name string
 }
 
 func IsErrProjectNotExist(err error) bool {
@@ -38,7 +39,7 @@ func IsErrProjectNotExist(err error) bool {
 }
 
 func (e ErrProjectNotExist) Error() string {
-	return fmt.Sprintf("Project does not exist [id: %d, uid: %s]", e.ID, e.UID)
+	return fmt.Sprintf("Project does not exist [id: %d, uid: %s, name: %s]", e.ID, e.UID, e.Name)
 }
 
 func GetProjectByUID(uid string) (*Project, error) {
@@ -75,17 +76,17 @@ func DeleteProject(p *Project) error {
 	return sess.Commit()
 }
 
-func isProjectExist(id int64, uid string) (bool, error) {
-	if len(uid) == 0 {
+func isProjectExist(id int64, name string) (bool, error) {
+	if len(name) == 0 {
 		return false, nil
 	}
 	return x.
-		Where("id!=?", uid).
-		Get(&Project{UID: strings.ToLower(uid)})
+		Where("id!=?", id).
+		Get(&Project{Name: name})
 }
 
 type ErrProjectAlreadyExist struct {
-	UID string
+	Name string
 }
 
 func IsErrProjectAlreadyExist(err error) bool {
@@ -94,15 +95,15 @@ func IsErrProjectAlreadyExist(err error) bool {
 }
 
 func (e ErrProjectAlreadyExist) Error() string {
-	return fmt.Sprintf("Project already exist [uid: %s]", e.UID)
+	return fmt.Sprintf("Project already exist [name: %s]", e.Name)
 }
 
 func EditProject(p *Project) error {
-	isExist, err := isProjectExist(p.ID, p.UID)
+	isExist, err := isProjectExist(p.ID, p.Name)
 	if err != nil {
 		return err
 	} else if isExist {
-		return ErrProjectAlreadyExist{UID: p.UID}
+		return ErrProjectNotExist{Name: p.Name}
 	}
 	_, err = x.ID(p.ID).AllCols().Update(p)
 	return err
@@ -125,11 +126,11 @@ func CreateProject(p *Project) error {
 		return err
 	}
 
-	isExist, err := isProjectExist(0, p.UID)
+	isExist, err := isProjectExist(0, p.Name)
 	if err != nil {
 		return err
 	} else if isExist {
-		return ErrProjectAlreadyExist{UID: p.UID}
+		return ErrProjectNotExist{Name: p.Name}
 	}
 
 	if _, err = sess.Insert(p); err != nil {
