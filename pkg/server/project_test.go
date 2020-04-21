@@ -36,6 +36,7 @@ func TestHTTPServer_ProjectCreateRequest(t *testing.T) {
 	})
 	assert.NoError(t, err)
 	assert.Equal(t, p.Name, "name")
+	assert.Greater(t, len(p.UID), 0)
 
 	_, _, err = te.client.Projects.Create(&apiv1.ProjectCreateOptions{
 		Name:         "name",

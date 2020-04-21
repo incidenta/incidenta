@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	alphaNum = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+	alphaNum = "0123456789abcdefghijklmnopqrstuvwxyz"
 )
 
 func GetRandomString(n int) (string, error) {
