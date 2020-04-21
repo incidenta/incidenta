@@ -109,8 +109,12 @@ func EditProject(p *Project) error {
 	return err
 }
 
+func GetProjectUID() (string, error) {
+	return generate.GetRandomString(10)
+}
+
 func CreateProject(p *Project) error {
-	uid, err := generate.GetRandomString(12)
+	uid, err := GetProjectUID()
 	if err != nil {
 		return err
 	}
