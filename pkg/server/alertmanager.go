@@ -27,5 +27,7 @@ func (h *HTTPServer) AlertmanagerWebhookRequest(_ http.ResponseWriter, r *http.R
 		}
 		return Error(500, "Internal Server Error", err)
 	}
-	return Empty(201)
+	return JSON(201, map[string]int{
+		"count": len(message.Alerts()),
+	})
 }

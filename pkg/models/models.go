@@ -21,7 +21,6 @@ func init() {
 		new(Alert),
 		new(Log),
 		new(Receiver),
-		new(Snooze),
 		new(Template),
 	)
 }

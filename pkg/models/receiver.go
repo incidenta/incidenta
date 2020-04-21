@@ -137,8 +137,8 @@ func (r *Receiver) APIFormat() *apiv1.Receiver {
 		AckButton:     r.AckButton,
 		ResolveButton: r.ResolveButton,
 		SnoozeButton:  r.SnoozeButton,
-		CreatedUnix:   r.CreatedUnix.AsTime(),
-		UpdatedUnix:   r.UpdatedUnix.AsTime(),
+		CreatedAt:     r.CreatedUnix.AsTime(),
+		UpdatedAt:     r.UpdatedUnix.AsTime(),
 	}
 }
 

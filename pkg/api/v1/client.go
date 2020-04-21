@@ -21,7 +21,6 @@ type Client struct {
 	Alerts    *Alerts
 	Logs      *Logs
 	Receivers *Receivers
-	Snoozes   *Snoozes
 	Templates *Templates
 
 	endpoint string
@@ -60,7 +59,6 @@ func newClient(httpClient *http.Client, endpoint string) *Client {
 	c.Alerts = &Alerts{c}
 	c.Logs = &Logs{c}
 	c.Receivers = &Receivers{c}
-	c.Snoozes = &Snoozes{c}
 	c.Templates = &Templates{c}
 
 	return c

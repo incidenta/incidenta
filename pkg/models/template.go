@@ -21,10 +21,10 @@ type Template struct {
 
 func (t *Template) APIFormat(withContent bool) *apiv1.Template {
 	template := &apiv1.Template{
-		ID:          t.ID,
-		Name:        t.Name,
-		CreatedUnix: t.CreatedUnix.AsTime(),
-		UpdatedUnix: t.UpdatedUnix.AsTime(),
+		ID:        t.ID,
+		Name:      t.Name,
+		CreatedAt: t.CreatedUnix.AsTime(),
+		UpdatedAt: t.UpdatedUnix.AsTime(),
 	}
 	if withContent {
 		template.Content = t.Content

@@ -24,13 +24,13 @@ type Log struct {
 
 func (l *Log) APIFormat() *apiv1.Log {
 	return &apiv1.Log{
-		ID:          l.ID,
-		ReceiverID:  l.ReceiverID,
-		AlertID:     l.AlertID,
-		Username:    l.Username,
-		Comment:     l.Comment,
-		CreatedUnix: l.CreatedUnix.AsTime(),
-		UpdatedUnix: l.UpdatedUnix.AsTime(),
+		ID:         l.ID,
+		ReceiverID: l.ReceiverID,
+		AlertID:    l.AlertID,
+		Username:   l.Username,
+		Comment:    l.Comment,
+		CreatedAt:  l.CreatedUnix.AsTime(),
+		UpdatedAt:  l.UpdatedUnix.AsTime(),
 	}
 }
 

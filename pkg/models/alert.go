@@ -17,19 +17,24 @@ type Alert struct {
 	Fingerprint string    `xorm:"INDEX NOT NULL"`
 	Body        string
 
+	Snoozed     bool
+	SnoozedUnix timeutil.TimeStamp
+
 	CreatedUnix timeutil.TimeStamp `xorm:"INDEX created"`
 	UpdatedUnix timeutil.TimeStamp `xorm:"INDEX updated"`
 }
 
 func (a *Alert) APIFormat() *apiv1.Alert {
 	return &apiv1.Alert{
-		ID:          a.ID,
-		Name:        a.Name,
-		ReceiverID:  a.ReceiverID,
-		Fingerprint: a.Fingerprint,
-		Body:        a.Body,
-		CreatedUnix: a.CreatedUnix.AsTime(),
-		UpdatedUnix: a.UpdatedUnix.AsTime(),
+		ID:           a.ID,
+		Name:         a.Name,
+		ReceiverID:   a.ReceiverID,
+		Fingerprint:  a.Fingerprint,
+		Body:         a.Body,
+		Snoozed:      a.Snoozed,
+		SnoozedUntil: a.SnoozedUnix.AsTime(),
+		CreatedAt:    a.CreatedUnix.AsTime(),
+		UpdatedAt:    a.UpdatedUnix.AsTime(),
 	}
 }
 

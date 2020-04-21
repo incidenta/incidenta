@@ -20,8 +20,8 @@ type Receiver struct {
 	AckButton     bool      `json:"ack_button"`
 	ResolveButton bool      `json:"resolve_button"`
 	SnoozeButton  bool      `json:"snooze_button"`
-	CreatedUnix   time.Time `json:"created_at"`
-	UpdatedUnix   time.Time `json:"updated_at"`
+	CreatedAt     time.Time `json:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at"`
 }
 
 // swagger:parameters CreateReceiver

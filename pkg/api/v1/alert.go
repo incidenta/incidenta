@@ -14,13 +14,15 @@ type swaggerAlertOptions struct {
 
 // swagger:model
 type Alert struct {
-	ID          int64     `json:"id"`
-	Name        string    `json:"name"`
-	ReceiverID  int64     `json:"receiver_id"`
-	Fingerprint string    `json:"fingerprint"`
-	Body        string    `json:"body"`
-	CreatedUnix time.Time `json:"created_at"`
-	UpdatedUnix time.Time `json:"updated_at"`
+	ID           int64     `json:"id"`
+	Name         string    `json:"name"`
+	ReceiverID   int64     `json:"receiver_id"`
+	Fingerprint  string    `json:"fingerprint"`
+	Body         string    `json:"body"`
+	Snoozed      bool      `json:"snoozed"`
+	SnoozedUntil time.Time `json:"snoozed_until"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
 }
 
 type Alerts struct {

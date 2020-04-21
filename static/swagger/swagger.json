@@ -404,7 +404,7 @@
         "created_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-name": "CreatedUnix"
+          "x-go-name": "CreatedAt"
         },
         "fingerprint": {
           "type": "string",
@@ -424,10 +424,19 @@
           "format": "int64",
           "x-go-name": "ReceiverID"
         },
+        "snoozed": {
+          "type": "boolean",
+          "x-go-name": "Snoozed"
+        },
+        "snoozed_until": {
+          "type": "string",
+          "format": "date-time",
+          "x-go-name": "SnoozedUntil"
+        },
         "updated_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-name": "UpdatedUnix"
+          "x-go-name": "UpdatedAt"
         }
       },
       "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
