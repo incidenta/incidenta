@@ -31,13 +31,13 @@ func NewHTTPServer(c Config) *HTTPServer {
 func (h *HTTPServer) addRoutes() {
 	r := h.router.PathPrefix("/v1").Subrouter()
 
-	// Receiver
-	r.HandleFunc("/receivers", wrapper(h.ReceiverListRequest)).Methods("GET")
-	r.HandleFunc("/receiver", wrapper(h.ReceiverCreateRequest)).Methods("POST")
-	r.HandleFunc("/receiver/{receiver_id}", wrapper(h.ReceiverGetRequest)).Methods("GET")
-	r.HandleFunc("/receiver/{receiver_id}", wrapper(h.ReceiverEditRequest)).Methods("POST")
-	r.HandleFunc("/receiver/{receiver_id}", wrapper(h.ReceiverDeleteRequest)).Methods("DELETE")
-	r.HandleFunc("/receiver/{receiver_id}/alerts", wrapper(h.ReceiverAlertsRequest)).Methods("GET")
+	// Project
+	r.HandleFunc("/projects", wrapper(h.ProjectListRequest)).Methods("GET")
+	r.HandleFunc("/project", wrapper(h.ProjectCreateRequest)).Methods("POST")
+	r.HandleFunc("/project/{project_id}", wrapper(h.ProjectGetRequest)).Methods("GET")
+	r.HandleFunc("/project/{project_id}", wrapper(h.ProjectEditRequest)).Methods("POST")
+	r.HandleFunc("/project/{project_id}", wrapper(h.ProjectDeleteRequest)).Methods("DELETE")
+	r.HandleFunc("/project/{project_id}/alerts", wrapper(h.ProjectAlertsRequest)).Methods("GET")
 
 	// Log
 	r.HandleFunc("/log/{log_id}", wrapper(h.LogGetRequest)).Methods("GET")
@@ -49,15 +49,8 @@ func (h *HTTPServer) addRoutes() {
 	r.HandleFunc("/alert/{alert_id}", wrapper(h.AlertDeleteRequest)).Methods("DELETE")
 	r.HandleFunc("/alert/{alert_id}/logs", wrapper(h.AlertLogsRequest)).Methods("GET")
 
-	// Template
-	r.HandleFunc("/templates", wrapper(h.TemplateListRequest)).Methods("GET")
-	r.HandleFunc("/template", wrapper(h.TemplateCreateRequest)).Methods("POST")
-	r.HandleFunc("/template/{template_id}", wrapper(h.TemplateGetRequest)).Methods("GET")
-	r.HandleFunc("/template/{template_id}", wrapper(h.TemplateEditRequest)).Methods("POST")
-	r.HandleFunc("/template/{template_id}", wrapper(h.TemplateDeleteRequest)).Methods("DELETE")
-
 	// Alertmanager
-	r.HandleFunc("/alertmanager/webhook", wrapper(h.AlertmanagerWebhookRequest))
+	r.HandleFunc("/integrations/alertmanager/{project_uid}", wrapper(h.AlertmanagerWebhookRequest))
 
 	// Telemetry
 	h.router.Handle("/metrics", promhttp.Handler())

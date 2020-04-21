@@ -4,19 +4,20 @@ import (
 	"time"
 )
 
-// swagger:parameters GetReceiver DeleteReceiver ListReceiverAlerts
-type swaggerReceiverOptions struct {
+// swagger:parameters GetProject DeleteProject ListProjectAlerts
+type swaggerProjectOptions struct {
 	// in: path
-	ReceiverID int `json:"receiver_id"`
+	ProjectID int `json:"project_id"`
 }
 
 // swagger:model
-type Receiver struct {
+type Project struct {
 	ID            int64     `json:"id"`
+	UID           string    `json:"uid"`
 	Name          string    `json:"name"`
 	Description   string    `json:"description"`
 	SlackURL      string    `json:"slack_url"`
-	TemplateID    int64     `json:"template_id"`
+	SlackChannel  string    `json:"slack_channel"`
 	AckButton     bool      `json:"ack_button"`
 	ResolveButton bool      `json:"resolve_button"`
 	SnoozeButton  bool      `json:"snooze_button"`
@@ -24,42 +25,42 @@ type Receiver struct {
 	UpdatedAt     time.Time `json:"updated_at"`
 }
 
-// swagger:parameters CreateReceiver
-type swaggerReceiverCreateOptions struct {
+// swagger:parameters CreateProject
+type swaggerProjectCreateOptions struct {
 	// in: body
-	Body *ReceiverCreateOptions
+	Body *ProjectCreateOptions
 }
 
-type ReceiverCreateOptions struct {
+type ProjectCreateOptions struct {
 	// required: true
 	Name        string `json:"name" validate:"required"`
 	Description string `json:"description"`
 	// required: true
 	SlackURL string `json:"slack_url" validate:"required"`
 	// required: true
-	TemplateID    int64 `json:"template_id" validate:"required"`
-	AckButton     bool  `json:"ack_button"`
-	ResolveButton bool  `json:"resolve_button"`
-	SnoozeButton  bool  `json:"snooze_button"`
+	SlackChannel  string `json:"slack_channel" validate:"required"`
+	AckButton     bool   `json:"ack_button"`
+	ResolveButton bool   `json:"resolve_button"`
+	SnoozeButton  bool   `json:"snooze_button"`
 }
 
-// swagger:parameters EditReceiver
-type swaggerReceiverEditOptions struct {
-	swaggerReceiverOptions
+// swagger:parameters EditProject
+type swaggerProjectEditOptions struct {
+	swaggerProjectOptions
 	// in: body
-	Body *ReceiverEditOptions
+	Body *ProjectEditOptions
 }
 
-type ReceiverEditOptions struct {
+type ProjectEditOptions struct {
 	Name          *string `json:"name"`
 	Description   *string `json:"description"`
 	SlackURL      *string `json:"slack_url"`
-	TemplateID    *int64  `json:"template_id"`
+	SlackChannel  *string `json:"slack_channel"`
 	AckButton     *bool   `json:"ack_button"`
 	ResolveButton *bool   `json:"resolve_button"`
 	SnoozeButton  *bool   `json:"snooze_button"`
 }
 
-type Receivers struct {
+type Projects struct {
 	c *Client
 }

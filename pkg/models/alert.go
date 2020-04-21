@@ -13,9 +13,9 @@ import (
 type Alert struct {
 	ID          int64 `xorm:"pk autoincr"`
 	Name        string
-	ReceiverID  int64
-	Receiver    *Receiver `xorm:"-"`
-	Fingerprint string    `xorm:"INDEX NOT NULL"`
+	ProjectID   int64
+	Project     *Project `xorm:"-"`
+	Fingerprint string   `xorm:"INDEX NOT NULL"`
 	Body        string
 
 	SnoozedUnix timeutil.TimeStamp
@@ -25,19 +25,20 @@ type Alert struct {
 }
 
 func (a *Alert) APIFormat() *apiv1.Alert {
-	alert := &apiv1.Alert{
+	return &apiv1.Alert{
 		ID:          a.ID,
 		Name:        a.Name,
-		ReceiverID:  a.ReceiverID,
+		ProjectID:   a.ProjectID,
 		Fingerprint: a.Fingerprint,
 		Body:        a.Body,
+		Snoozed:     a.IsSnoozed(),
 		CreatedAt:   a.CreatedUnix.AsTime(),
 		UpdatedAt:   a.UpdatedUnix.AsTime(),
 	}
-	if !a.SnoozedUnix.IsZero() && time.Since(a.SnoozedUnix.AsTime()) > 0 {
-		alert.Snoozed = true
-	}
-	return alert
+}
+
+func (a *Alert) IsSnoozed() bool {
+	return !a.SnoozedUnix.IsZero() && time.Since(a.SnoozedUnix.AsTime()) > 0
 }
 
 type ErrAlertNotExist struct {
@@ -92,14 +93,14 @@ func DeleteAlert(a *Alert) error {
 }
 
 type SearchAlertsOptions struct {
-	ReceiverID int64
-	OrderBy    SearchOrderBy
+	ProjectID int64
+	OrderBy   SearchOrderBy
 }
 
 func (o *SearchAlertsOptions) toConds() builder.Cond {
 	cond := builder.NewCond()
-	if o.ReceiverID >= 0 {
-		cond = cond.And(builder.Eq{"receiver_id": o.ReceiverID})
+	if o.ProjectID >= 0 {
+		cond = cond.And(builder.Eq{"project_id": o.ProjectID})
 	}
 	return cond
 }

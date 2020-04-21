@@ -233,20 +233,20 @@
         }
       }
     },
-    "/v1/receiver": {
+    "/v1/project": {
       "get": {
         "description": "List operation",
         "tags": [
-          "Receiver"
+          "Project"
         ],
-        "operationId": "ListReceiver",
+        "operationId": "ListProject",
         "responses": {
           "200": {
-            "description": "Receiver",
+            "description": "Project",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Receiver"
+                "$ref": "#/definitions/Project"
               }
             }
           },
@@ -258,23 +258,23 @@
       "post": {
         "description": "Create operation",
         "tags": [
-          "Receiver"
+          "Project"
         ],
-        "operationId": "CreateReceiver",
+        "operationId": "CreateProject",
         "parameters": [
           {
             "name": "Body",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/ReceiverCreateOptions"
+              "$ref": "#/definitions/ProjectCreateOptions"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Receiver",
+            "description": "Project",
             "schema": {
-              "$ref": "#/definitions/Receiver"
+              "$ref": "#/definitions/Project"
             }
           },
           "400": {
@@ -286,28 +286,28 @@
         }
       }
     },
-    "/v1/receiver/{receiver_id}": {
+    "/v1/project/{project_id}": {
       "get": {
         "description": "Get operation",
         "tags": [
-          "Receiver"
+          "Project"
         ],
-        "operationId": "GetReceiver",
+        "operationId": "GetProject",
         "parameters": [
           {
             "type": "integer",
             "format": "int64",
-            "x-go-name": "ReceiverID",
-            "name": "receiver_id",
+            "x-go-name": "ProjectID",
+            "name": "project_id",
             "in": "path",
             "required": true
           }
         ],
         "responses": {
           "200": {
-            "description": "Receiver",
+            "description": "Project",
             "schema": {
-              "$ref": "#/definitions/Receiver"
+              "$ref": "#/definitions/Project"
             }
           },
           "400": {
@@ -324,15 +324,15 @@
       "post": {
         "description": "Edit operation",
         "tags": [
-          "Receiver"
+          "Project"
         ],
-        "operationId": "EditReceiver",
+        "operationId": "EditProject",
         "parameters": [
           {
             "type": "integer",
             "format": "int64",
-            "x-go-name": "ReceiverID",
-            "name": "receiver_id",
+            "x-go-name": "ProjectID",
+            "name": "project_id",
             "in": "path",
             "required": true
           },
@@ -340,15 +340,15 @@
             "name": "Body",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/ReceiverEditOptions"
+              "$ref": "#/definitions/ProjectEditOptions"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Receiver",
+            "description": "Project",
             "schema": {
-              "$ref": "#/definitions/Receiver"
+              "$ref": "#/definitions/Project"
             }
           },
           "400": {
@@ -365,15 +365,15 @@
       "delete": {
         "description": "Delete operation",
         "tags": [
-          "Receiver"
+          "Project"
         ],
-        "operationId": "DeleteReceiver",
+        "operationId": "DeleteProject",
         "parameters": [
           {
             "type": "integer",
             "format": "int64",
-            "x-go-name": "ReceiverID",
-            "name": "receiver_id",
+            "x-go-name": "ProjectID",
+            "name": "project_id",
             "in": "path",
             "required": true
           }
@@ -384,6 +384,42 @@
             "$ref": "#/responses/GenericError"
           },
           "404": {
+            "$ref": "#/responses/GenericError"
+          },
+          "500": {
+            "$ref": "#/responses/GenericError"
+          }
+        }
+      }
+    },
+    "/v1/project/{project_id}/alerts": {
+      "get": {
+        "description": "List alerts operation",
+        "tags": [
+          "Project"
+        ],
+        "operationId": "ListProjectAlerts",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "ProjectID",
+            "name": "project_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Alert",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Alert"
+              }
+            }
+          },
+          "400": {
             "$ref": "#/responses/GenericError"
           },
           "500": {
@@ -419,19 +455,14 @@
           "type": "string",
           "x-go-name": "Name"
         },
-        "receiver_id": {
+        "project_id": {
           "type": "integer",
           "format": "int64",
-          "x-go-name": "ReceiverID"
+          "x-go-name": "ProjectID"
         },
         "snoozed": {
           "type": "boolean",
           "x-go-name": "Snoozed"
-        },
-        "snoozed_until": {
-          "type": "string",
-          "format": "date-time",
-          "x-go-name": "SnoozedUntil"
         },
         "updated_at": {
           "type": "string",
@@ -479,10 +510,10 @@
           "format": "int64",
           "x-go-name": "ID"
         },
-        "receiver_id": {
+        "project_id": {
           "type": "integer",
           "format": "int64",
-          "x-go-name": "ReceiverID"
+          "x-go-name": "ProjectID"
         },
         "updated_at": {
           "type": "string",
@@ -536,7 +567,7 @@
       },
       "x-go-package": "github.com/prometheus/alertmanager/notify/webhook"
     },
-    "Receiver": {
+    "Project": {
       "type": "object",
       "properties": {
         "ack_button": {
@@ -565,6 +596,10 @@
           "type": "boolean",
           "x-go-name": "ResolveButton"
         },
+        "slack_channel": {
+          "type": "string",
+          "x-go-name": "SlackChannel"
+        },
         "slack_url": {
           "type": "string",
           "x-go-name": "SlackURL"
@@ -573,10 +608,9 @@
           "type": "boolean",
           "x-go-name": "SnoozeButton"
         },
-        "template_id": {
-          "type": "integer",
-          "format": "int64",
-          "x-go-name": "TemplateID"
+        "uid": {
+          "type": "string",
+          "x-go-name": "UID"
         },
         "updated_at": {
           "type": "string",
@@ -586,12 +620,12 @@
       },
       "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
     },
-    "ReceiverCreateOptions": {
+    "ProjectCreateOptions": {
       "type": "object",
       "required": [
         "name",
         "slack_url",
-        "template_id"
+        "slack_channel"
       ],
       "properties": {
         "ack_button": {
@@ -610,6 +644,10 @@
           "type": "boolean",
           "x-go-name": "ResolveButton"
         },
+        "slack_channel": {
+          "type": "string",
+          "x-go-name": "SlackChannel"
+        },
         "slack_url": {
           "type": "string",
           "x-go-name": "SlackURL"
@@ -617,16 +655,11 @@
         "snooze_button": {
           "type": "boolean",
           "x-go-name": "SnoozeButton"
-        },
-        "template_id": {
-          "type": "integer",
-          "format": "int64",
-          "x-go-name": "TemplateID"
         }
       },
       "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
     },
-    "ReceiverEditOptions": {
+    "ProjectEditOptions": {
       "type": "object",
       "properties": {
         "ack_button": {
@@ -645,6 +678,10 @@
           "type": "boolean",
           "x-go-name": "ResolveButton"
         },
+        "slack_channel": {
+          "type": "string",
+          "x-go-name": "SlackChannel"
+        },
         "slack_url": {
           "type": "string",
           "x-go-name": "SlackURL"
@@ -652,72 +689,6 @@
         "snooze_button": {
           "type": "boolean",
           "x-go-name": "SnoozeButton"
-        },
-        "template_id": {
-          "type": "integer",
-          "format": "int64",
-          "x-go-name": "TemplateID"
-        }
-      },
-      "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
-    },
-    "Template": {
-      "type": "object",
-      "properties": {
-        "content": {
-          "type": "string",
-          "x-go-name": "Content"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time",
-          "x-go-name": "CreatedAt"
-        },
-        "id": {
-          "type": "integer",
-          "format": "int64",
-          "x-go-name": "ID"
-        },
-        "name": {
-          "type": "string",
-          "x-go-name": "Name"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time",
-          "x-go-name": "UpdatedAt"
-        }
-      },
-      "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
-    },
-    "TemplateCreateOptions": {
-      "type": "object",
-      "required": [
-        "name",
-        "content"
-      ],
-      "properties": {
-        "content": {
-          "type": "string",
-          "x-go-name": "Content"
-        },
-        "name": {
-          "type": "string",
-          "x-go-name": "Name"
-        }
-      },
-      "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
-    },
-    "TemplateEditOptions": {
-      "type": "object",
-      "properties": {
-        "content": {
-          "type": "string",
-          "x-go-name": "Content"
-        },
-        "name": {
-          "type": "string",
-          "x-go-name": "Name"
         }
       },
       "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"

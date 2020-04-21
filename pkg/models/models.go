@@ -20,8 +20,7 @@ func init() {
 	tables = append(tables,
 		new(Alert),
 		new(Log),
-		new(Receiver),
-		new(Template),
+		new(Project),
 	)
 }
 

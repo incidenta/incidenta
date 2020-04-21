@@ -16,7 +16,7 @@ type swaggerAlertOptions struct {
 type Alert struct {
 	ID          int64     `json:"id"`
 	Name        string    `json:"name"`
-	ReceiverID  int64     `json:"receiver_id"`
+	ProjectID   int64     `json:"project_id"`
 	Fingerprint string    `json:"fingerprint"`
 	Body        string    `json:"body"`
 	Snoozed     bool      `json:"snoozed"`

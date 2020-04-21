@@ -10,13 +10,13 @@ import (
 )
 
 type Log struct {
-	ID         int64 `xorm:"pk autoincr"`
-	ReceiverID int64
-	Receiver   *Receiver `xorm:"-"`
-	AlertID    int64
-	Alert      *Alert `xorm:"-"`
-	Username   string
-	Comment    string
+	ID        int64 `xorm:"pk autoincr"`
+	ProjectID int64
+	Project   *Project `xorm:"-"`
+	AlertID   int64
+	Alert     *Alert `xorm:"-"`
+	Username  string
+	Comment   string
 
 	CreatedUnix timeutil.TimeStamp `xorm:"INDEX created"`
 	UpdatedUnix timeutil.TimeStamp `xorm:"INDEX updated"`
@@ -24,13 +24,13 @@ type Log struct {
 
 func (l *Log) APIFormat() *apiv1.Log {
 	return &apiv1.Log{
-		ID:         l.ID,
-		ReceiverID: l.ReceiverID,
-		AlertID:    l.AlertID,
-		Username:   l.Username,
-		Comment:    l.Comment,
-		CreatedAt:  l.CreatedUnix.AsTime(),
-		UpdatedAt:  l.UpdatedUnix.AsTime(),
+		ID:        l.ID,
+		ProjectID: l.ProjectID,
+		AlertID:   l.AlertID,
+		Username:  l.Username,
+		Comment:   l.Comment,
+		CreatedAt: l.CreatedUnix.AsTime(),
+		UpdatedAt: l.UpdatedUnix.AsTime(),
 	}
 }
 
@@ -71,15 +71,15 @@ func GetLogByID(id int64) (*Log, error) {
 }
 
 type SearchLogsOptions struct {
-	ReceiverID int64
-	AlertID    int64
-	OrderBy    SearchOrderBy
+	ProjectID int64
+	AlertID   int64
+	OrderBy   SearchOrderBy
 }
 
 func (o *SearchLogsOptions) toConds() builder.Cond {
 	cond := builder.NewCond()
-	if o.ReceiverID >= 0 {
-		cond = cond.And(builder.Eq{"receiver_id": o.ReceiverID})
+	if o.ProjectID >= 0 {
+		cond = cond.And(builder.Eq{"project_id": o.ProjectID})
 	}
 	if o.AlertID >= 0 {
 		cond = cond.And(builder.Eq{"alert_id": o.AlertID})
