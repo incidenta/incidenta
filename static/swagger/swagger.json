@@ -141,14 +141,21 @@
         }
       }
     },
-    "/v1/alertmanager/webhook": {
+    "/v1/integrations/alertmanager/{project_uid}": {
       "post": {
-        "description": "Alertmanager Webhook operation",
+        "description": "Alertmanager integration",
         "tags": [
-          "Alertmanager"
+          "Integration"
         ],
-        "operationId": "AlertmanagerWebhook",
+        "operationId": "Alertmanager",
         "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ProjectUID",
+            "name": "project_uid",
+            "in": "path",
+            "required": true
+          },
           {
             "name": "Body",
             "in": "body",

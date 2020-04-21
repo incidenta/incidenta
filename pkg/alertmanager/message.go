@@ -8,12 +8,6 @@ import (
 	"github.com/prometheus/alertmanager/template"
 )
 
-// swagger:parameters AlertmanagerWebhook
-type swaggerMessage struct {
-	// in: body
-	Body *webhook.Message
-}
-
 type Message webhook.Message
 
 func ParseMessage(r *http.Request) (*Message, error) {

@@ -50,7 +50,7 @@ func (h *HTTPServer) addRoutes() {
 	r.HandleFunc("/alert/{alert_id}/logs", wrapper(h.AlertLogsRequest)).Methods("GET")
 
 	// Alertmanager
-	r.HandleFunc("/integrations/alertmanager/{project_uid}", wrapper(h.AlertmanagerWebhookRequest))
+	r.HandleFunc("/integrations/alertmanager/{project_uid}", wrapper(h.AlertmanagerRequest))
 
 	// Telemetry
 	h.router.Handle("/metrics", promhttp.Handler())
