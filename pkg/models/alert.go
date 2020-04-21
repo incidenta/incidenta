@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"time"
 
 	"xorm.io/builder"
 
@@ -17,7 +18,6 @@ type Alert struct {
 	Fingerprint string    `xorm:"INDEX NOT NULL"`
 	Body        string
 
-	Snoozed     bool
 	SnoozedUnix timeutil.TimeStamp
 
 	CreatedUnix timeutil.TimeStamp `xorm:"INDEX created"`
@@ -25,17 +25,19 @@ type Alert struct {
 }
 
 func (a *Alert) APIFormat() *apiv1.Alert {
-	return &apiv1.Alert{
-		ID:           a.ID,
-		Name:         a.Name,
-		ReceiverID:   a.ReceiverID,
-		Fingerprint:  a.Fingerprint,
-		Body:         a.Body,
-		Snoozed:      a.Snoozed,
-		SnoozedUntil: a.SnoozedUnix.AsTime(),
-		CreatedAt:    a.CreatedUnix.AsTime(),
-		UpdatedAt:    a.UpdatedUnix.AsTime(),
+	alert := &apiv1.Alert{
+		ID:          a.ID,
+		Name:        a.Name,
+		ReceiverID:  a.ReceiverID,
+		Fingerprint: a.Fingerprint,
+		Body:        a.Body,
+		CreatedAt:   a.CreatedUnix.AsTime(),
+		UpdatedAt:   a.UpdatedUnix.AsTime(),
 	}
+	if !a.SnoozedUnix.IsZero() && time.Since(a.SnoozedUnix.AsTime()) > 0 {
+		alert.Snoozed = true
+	}
+	return alert
 }
 
 type ErrAlertNotExist struct {
@@ -117,4 +119,44 @@ func SearchAlerts(opts *SearchAlertsOptions) ([]*Alert, int64, error) {
 
 	var alerts []*Alert
 	return alerts, count, sess.Find(&alerts)
+}
+
+func isAlertExist(id int64, fingerprint string) (bool, error) {
+	if len(fingerprint) == 0 {
+		return false, nil
+	}
+	return x.
+		Where("id!=?", id).
+		Get(&Alert{Fingerprint: fingerprint})
+}
+
+type ErrAlertAlreadyExist struct {
+	Fingerprint string
+}
+
+func IsErrAlertAlreadyExist(err error) bool {
+	_, ok := err.(ErrAlertAlreadyExist)
+	return ok
+}
+
+func (e ErrAlertAlreadyExist) Error() string {
+	return fmt.Sprintf("Alert already exist [fingerprint: %s]", e.Fingerprint)
+}
+
+func CreateAlert(a *Alert) error {
+	sess := x.NewSession()
+	defer sess.Close()
+	if err := sess.Begin(); err != nil {
+		return err
+	}
+	isExist, err := isAlertExist(0, a.Fingerprint)
+	if err != nil {
+		return err
+	} else if isExist {
+		return ErrAlertAlreadyExist{Fingerprint: a.Fingerprint}
+	}
+	if _, err = sess.Insert(a); err != nil {
+		return err
+	}
+	return sess.Commit()
 }

@@ -103,3 +103,15 @@ func SearchLogs(opts *SearchLogsOptions) ([]*Log, int64, error) {
 	var logs []*Log
 	return logs, count, sess.Find(&logs)
 }
+
+func CreateLog(l *Log) error {
+	sess := x.NewSession()
+	defer sess.Close()
+	if err := sess.Begin(); err != nil {
+		return err
+	}
+	if _, err := sess.Insert(l); err != nil {
+		return err
+	}
+	return sess.Commit()
+}
