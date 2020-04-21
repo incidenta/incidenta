@@ -39,7 +39,8 @@ func (a *Alert) APIFormat() *apiv1.Alert {
 }
 
 type ErrAlertNotExist struct {
-	ID int64
+	ID          int64
+	Fingerprint string
 }
 
 func IsErrAlertNotExist(err error) bool {
@@ -48,7 +49,7 @@ func IsErrAlertNotExist(err error) bool {
 }
 
 func (e ErrAlertNotExist) Error() string {
-	return fmt.Sprintf("Alert does not exist [id: %d]", e.ID)
+	return fmt.Sprintf("Alert does not exist [id: %d, fingerprint: %s]", e.ID, e.Fingerprint)
 }
 
 func GetAlertByID(id int64) (*Alert, error) {
@@ -58,6 +59,20 @@ func GetAlertByID(id int64) (*Alert, error) {
 		return nil, err
 	} else if !has {
 		return nil, ErrAlertNotExist{ID: id}
+	}
+	return a, nil
+}
+
+func GetAlertByFingerprint(fingerprint string) (*Alert, error) {
+	if len(fingerprint) == 0 {
+		return nil, ErrAlertNotExist{Fingerprint: fingerprint}
+	}
+	a := &Alert{Fingerprint: fingerprint}
+	has, err := x.Get(a)
+	if err != nil {
+		return nil, err
+	} else if !has {
+		return nil, ErrAlertNotExist{Fingerprint: fingerprint}
 	}
 	return a, nil
 }

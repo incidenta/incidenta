@@ -472,7 +472,7 @@
         "created_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-name": "CreatedUnix"
+          "x-go-name": "CreatedAt"
         },
         "id": {
           "type": "integer",
@@ -487,7 +487,7 @@
         "updated_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-name": "UpdatedUnix"
+          "x-go-name": "UpdatedAt"
         },
         "username": {
           "type": "string",
@@ -546,7 +546,7 @@
         "created_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-name": "CreatedUnix"
+          "x-go-name": "CreatedAt"
         },
         "description": {
           "type": "string",
@@ -581,7 +581,7 @@
         "updated_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-name": "UpdatedUnix"
+          "x-go-name": "UpdatedAt"
         }
       },
       "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
@@ -671,7 +671,7 @@
         "created_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-name": "CreatedUnix"
+          "x-go-name": "CreatedAt"
         },
         "id": {
           "type": "integer",
@@ -685,7 +685,7 @@
         "updated_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-name": "UpdatedUnix"
+          "x-go-name": "UpdatedAt"
         }
       },
       "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
