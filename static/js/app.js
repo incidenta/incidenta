@@ -16,6 +16,7 @@ angular.module('myApp', [
             })
 
             .otherwise('/');
+
         $locationProvider.html5Mode(false);
         $locationProvider.hashPrefix('!');
     });
