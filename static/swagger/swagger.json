@@ -105,13 +105,13 @@
         }
       }
     },
-    "/v1/alert/{alert_id}/logs": {
+    "/v1/alert/{alert_id}/events": {
       "get": {
-        "description": "Get logs operation",
+        "description": "Get events operation",
         "tags": [
           "Alert"
         ],
-        "operationId": "ListAlertLogs",
+        "operationId": "ListAlertEvents",
         "parameters": [
           {
             "type": "integer",
@@ -124,15 +124,80 @@
         ],
         "responses": {
           "200": {
-            "description": "Log",
+            "description": "Event",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Log"
+                "$ref": "#/definitions/Event"
               }
             }
           },
           "400": {
+            "$ref": "#/responses/GenericError"
+          },
+          "500": {
+            "$ref": "#/responses/GenericError"
+          }
+        }
+      }
+    },
+    "/v1/event/{event_id}": {
+      "get": {
+        "description": "Get operation",
+        "tags": [
+          "Event"
+        ],
+        "operationId": "GetEvent",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "EventID",
+            "name": "event_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/GenericError"
+          },
+          "404": {
+            "$ref": "#/responses/GenericError"
+          },
+          "500": {
+            "$ref": "#/responses/GenericError"
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete operation",
+        "tags": [
+          "Event"
+        ],
+        "operationId": "DeleteEvent",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "EventID",
+            "name": "event_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {},
+          "400": {
+            "$ref": "#/responses/GenericError"
+          },
+          "404": {
             "$ref": "#/responses/GenericError"
           },
           "500": {
@@ -172,71 +237,6 @@
             }
           },
           "400": {
-            "$ref": "#/responses/GenericError"
-          },
-          "500": {
-            "$ref": "#/responses/GenericError"
-          }
-        }
-      }
-    },
-    "/v1/log/{log_id}": {
-      "get": {
-        "description": "Get operation",
-        "tags": [
-          "Log"
-        ],
-        "operationId": "GetLog",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "x-go-name": "LogID",
-            "name": "log_id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Alert",
-            "schema": {
-              "$ref": "#/definitions/Alert"
-            }
-          },
-          "400": {
-            "$ref": "#/responses/GenericError"
-          },
-          "404": {
-            "$ref": "#/responses/GenericError"
-          },
-          "500": {
-            "$ref": "#/responses/GenericError"
-          }
-        }
-      },
-      "delete": {
-        "description": "Delete operation",
-        "tags": [
-          "Log"
-        ],
-        "operationId": "DeleteLog",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "x-go-name": "LogID",
-            "name": "log_id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "204": {},
-          "400": {
-            "$ref": "#/responses/GenericError"
-          },
-          "404": {
             "$ref": "#/responses/GenericError"
           },
           "500": {
@@ -512,21 +512,17 @@
       },
       "x-go-package": "github.com/prometheus/alertmanager/template"
     },
-    "KV": {
-      "type": "object",
-      "title": "KV is a set of key/value string pairs.",
-      "additionalProperties": {
-        "type": "string"
-      },
-      "x-go-package": "github.com/prometheus/alertmanager/template"
-    },
-    "Log": {
+    "Event": {
       "type": "object",
       "properties": {
         "alert_id": {
           "type": "integer",
           "format": "int64",
           "x-go-name": "AlertID"
+        },
+        "alert_status": {
+          "type": "string",
+          "x-go-name": "AlertStatus"
         },
         "comment": {
           "type": "string",
@@ -558,6 +554,14 @@
         }
       },
       "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
+    },
+    "KV": {
+      "type": "object",
+      "title": "KV is a set of key/value string pairs.",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "x-go-package": "github.com/prometheus/alertmanager/template"
     },
     "Message": {
       "type": "object",
