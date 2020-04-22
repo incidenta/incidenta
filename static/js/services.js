@@ -1,9 +1,9 @@
 angular.module('myApp.services', [])
 
     .service('API', function ($http) {
-        this.getAlertLogs = function(alert_id) {
+        this.getAlertEvents = function(alert_id) {
             return $http.get(
-                '/v1/alert/' + alert_id + '/logs'
+                '/v1/alert/' + alert_id + '/events'
             );
         }
         this.getProjectAlerts = function(project_id) {

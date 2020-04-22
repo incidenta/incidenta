@@ -15,7 +15,7 @@
         <md-content>
             <md-list>
                 <md-subheader class="md-no-sticky">Alerts</md-subheader>
-                <md-list-item class="md-2-line" ng-repeat="alert in alerts" ng-click="showLogs(alert)">
+                <md-list-item class="md-2-line" ng-repeat="alert in alerts" ng-click="showEvents(alert)">
                     <img ng-src="icons/fire.svg" class="md-avatar" alt="logo" />
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ alert.name }}</h3>
@@ -33,15 +33,15 @@
             <md-list>
                 <md-subheader class="md-no-sticky" ng-show="alert">Labels</md-subheader>
                 <div class="md-padding"><pre>{{ alert.labels | prettyJSON }}</pre></div>
-                <md-subheader class="md-no-sticky">Logs</md-subheader>
-                <md-list-item class="md-2-line" ng-repeat="log in logs">
+                <md-subheader class="md-no-sticky">Events</md-subheader>
+                <md-list-item class="md-2-line" ng-repeat="event in events">
                     <img ng-src="icons/watch.svg" class="md-avatar" alt="logo" />
                     <div class="md-list-item-text" layout="column">
-                        <h3>{{ log.created_at | date : 'dd.MM.yyyy, HH:mm:ss' }}<span ng-if="log.alert_status.length > 0"> - {{ log.alert_status }}</span></h3>
+                        <h3>{{ event.created_at | date : 'dd.MM.yyyy, HH:mm:ss' }}<span ng-if="event.alert_status.length > 0"> - {{ event.alert_status }}</span></h3>
                         <p>
-                            <span ng-if="log.comment.length > 0">{{ log.comment }}</span>
-                            <span ng-if="log.comment.length == 0">n/a</span>
-                            <small>– {{ log.username }}</small>
+                            <span ng-if="event.comment.length > 0">{{ event.comment }}</span>
+                            <span ng-if="event.comment.length == 0">n/a</span>
+                            <small>– {{ event.username }}</small>
                         </p>
                     </div>
                 </md-list-item>

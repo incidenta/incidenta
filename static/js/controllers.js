@@ -8,7 +8,7 @@ angular.module('myApp.controllers', [])
         $scope.alerts = [];
 
         $scope.project_id = $routeParams.project_id;
-        $scope.logs = [];
+        $scope.events = [];
         $scope.alert = {};
 
         $scope.start = function() {
@@ -22,17 +22,17 @@ angular.module('myApp.controllers', [])
                     $scope.alertsLoaded = true;
                     $scope.alerts = result.data;
                     if ($scope.alerts.length > 0) {
-                        $scope.showLogs($scope.alerts[0]);
+                        $scope.showEvents($scope.alerts[0]);
                     }
                 });
         }
 
-        $scope.showLogs = function(alert) {
-            $scope.logs = [];
+        $scope.showEvents = function(alert) {
+            $scope.events = [];
             $scope.alert = alert;
-            API.getAlertLogs(alert.id)
+            API.getAlertEvents(alert.id)
                 .then(function (result) {
-                    $scope.logs = result.data;
+                    $scope.events = result.data;
                 });
         }
 
