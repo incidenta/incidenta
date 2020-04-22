@@ -9,7 +9,7 @@ import (
 	"github.com/incidenta/incidenta/pkg/timeutil"
 )
 
-type Log struct {
+type Event struct {
 	ID          int64 `xorm:"pk autoincr"`
 	ProjectID   int64
 	Project     *Project `xorm:"-"`
@@ -23,62 +23,62 @@ type Log struct {
 	UpdatedUnix timeutil.TimeStamp `xorm:"INDEX updated"`
 }
 
-func (l *Log) APIFormat() *apiv1.Log {
-	return &apiv1.Log{
-		ID:          l.ID,
-		ProjectID:   l.ProjectID,
-		AlertID:     l.AlertID,
-		AlertStatus: l.AlertStatus,
-		Username:    l.Username,
-		Comment:     l.Comment,
-		CreatedAt:   l.CreatedUnix.AsTime(),
-		UpdatedAt:   l.UpdatedUnix.AsTime(),
+func (e *Event) APIFormat() *apiv1.Event {
+	return &apiv1.Event{
+		ID:          e.ID,
+		ProjectID:   e.ProjectID,
+		AlertID:     e.AlertID,
+		AlertStatus: e.AlertStatus,
+		Username:    e.Username,
+		Comment:     e.Comment,
+		CreatedAt:   e.CreatedUnix.AsTime(),
+		UpdatedAt:   e.UpdatedUnix.AsTime(),
 	}
 }
 
-type ErrLogNotExist struct {
+type ErrEventNotExist struct {
 	ID int64
 }
 
-func IsErrLogNotExist(err error) bool {
-	_, ok := err.(ErrLogNotExist)
+func IsErrEventNotExist(err error) bool {
+	_, ok := err.(ErrEventNotExist)
 	return ok
 }
 
-func (e ErrLogNotExist) Error() string {
-	return fmt.Sprintf("Log does not exist [id: %d]", e.ID)
+func (e ErrEventNotExist) Error() string {
+	return fmt.Sprintf("Event does not exist [id: %d]", e.ID)
 }
 
-func DeleteLog(l *Log) error {
+func DeleteEvent(e *Event) error {
 	sess := x.NewSession()
 	defer sess.Close()
 	if err := sess.Begin(); err != nil {
 		return err
 	}
-	if _, err := sess.ID(l.ID).Delete(new(Log)); err != nil {
+	if _, err := sess.ID(e.ID).Delete(new(Event)); err != nil {
 		return err
 	}
 	return sess.Commit()
 }
 
-func GetLogByID(id int64) (*Log, error) {
-	u := new(Log)
+func GetEventByID(id int64) (*Event, error) {
+	u := new(Event)
 	has, err := x.ID(id).Get(u)
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, ErrLogNotExist{ID: id}
+		return nil, ErrEventNotExist{ID: id}
 	}
 	return u, nil
 }
 
-type SearchLogsOptions struct {
+type SearchEventsOptions struct {
 	ProjectID int64
 	AlertID   int64
 	OrderBy   SearchOrderBy
 }
 
-func (o *SearchLogsOptions) toConds() builder.Cond {
+func (o *SearchEventsOptions) toConds() builder.Cond {
 	cond := builder.NewCond()
 	if o.ProjectID > 0 {
 		cond = cond.And(builder.Eq{"project_id": o.ProjectID})
@@ -89,9 +89,9 @@ func (o *SearchLogsOptions) toConds() builder.Cond {
 	return cond
 }
 
-func SearchLogs(opts *SearchLogsOptions) ([]*Log, int64, error) {
+func SearchEvents(opts *SearchEventsOptions) ([]*Event, int64, error) {
 	cond := opts.toConds()
-	count, err := x.Where(cond).Count(new(Log))
+	count, err := x.Where(cond).Count(new(Event))
 	if err != nil {
 		return nil, 0, fmt.Errorf("count: %v", err)
 	}
@@ -102,17 +102,17 @@ func SearchLogs(opts *SearchLogsOptions) ([]*Log, int64, error) {
 
 	sess := x.Where(cond).OrderBy(opts.OrderBy.String())
 
-	var logs []*Log
-	return logs, count, sess.Find(&logs)
+	var events []*Event
+	return events, count, sess.Find(&events)
 }
 
-func CreateLog(l *Log) error {
+func CreateEvent(e *Event) error {
 	sess := x.NewSession()
 	defer sess.Close()
 	if err := sess.Begin(); err != nil {
 		return err
 	}
-	if _, err := sess.Insert(l); err != nil {
+	if _, err := sess.Insert(e); err != nil {
 		return err
 	}
 	return sess.Commit()

@@ -181,16 +181,16 @@ func CreateAlertFromAlertmanagerAlert(project *Project, alert template.Alert) (*
 	if err := CreateAlert(a); err != nil {
 		return nil, err
 	}
-	_ = a.SysLog(alert.Status, "Created")
+	_ = a.SysEvent(alert.Status, "Created")
 	return a, nil
 }
 
-func (a *Alert) SysLog(status, comment string) error {
-	return a.Log("IncidentaBot", status, comment)
+func (a *Alert) SysEvent(status, comment string) error {
+	return a.Event("IncidentaBot", status, comment)
 }
 
-func (a *Alert) Log(username, status, comment string) error {
-	return CreateLog(&Log{
+func (a *Alert) Event(username, status, comment string) error {
+	return CreateEvent(&Event{
 		ProjectID:   a.ProjectID,
 		AlertID:     a.ID,
 		AlertStatus: status,

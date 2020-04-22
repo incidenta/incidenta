@@ -19,7 +19,7 @@ var (
 func init() {
 	tables = append(tables,
 		new(Alert),
-		new(Log),
+		new(Event),
 		new(Project),
 	)
 }

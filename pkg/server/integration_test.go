@@ -74,8 +74,8 @@ func TestHTTPServer_AlertmanagerRequest(t *testing.T) {
 	assert.Equal(t, len(alerts), 2)
 
 	for _, alert := range alerts {
-		logs, _, err := te.client.Alerts.Logs(alert.ID)
+		events, _, err := te.client.Alerts.Events(alert.ID)
 		assert.NoError(t, err)
-		assert.Equal(t, len(logs), 1)
+		assert.Equal(t, len(events), 1)
 	}
 }

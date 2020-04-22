@@ -9,26 +9,25 @@ import (
 	"github.com/incidenta/incidenta/pkg/models"
 )
 
-// swagger:route GET /v1/log/{log_id} Log GetLog
+// swagger:route GET /v1/event/{event_id} Event GetEvent
 //
 // Get operation
 //
 // 	Responses:
-// 		200: Alert
+// 		200: Event
 // 		400: GenericError
 // 		404: GenericError
 // 		500: GenericError
-func (h *HTTPServer) LogGetRequest(_ http.ResponseWriter, r *http.Request) Response {
+func (h *HTTPServer) EventGetRequest(_ http.ResponseWriter, r *http.Request) Response {
 	vars := mux.Vars(r)
-	alertLogIDRaw := vars["log_id"]
-	alertLogID, err := strconv.ParseInt(alertLogIDRaw, 10, 64)
+	id, err := strconv.ParseInt(vars["event_id"], 10, 64)
 	if err != nil {
 		return ValidationError(err)
 	}
 
-	al, err := models.GetLogByID(alertLogID)
+	al, err := models.GetEventByID(id)
 	if err != nil {
-		if models.IsErrLogNotExist(err) {
+		if models.IsErrEventNotExist(err) {
 			return Error(404, "Not Found", nil)
 		}
 		return InternalError(err)
@@ -37,7 +36,7 @@ func (h *HTTPServer) LogGetRequest(_ http.ResponseWriter, r *http.Request) Respo
 	return JSON(200, al.APIFormat())
 }
 
-// swagger:route DELETE /v1/log/{log_id} Log DeleteLog
+// swagger:route DELETE /v1/event/{event_id} Event DeleteEvent
 //
 // Delete operation
 //
@@ -46,23 +45,22 @@ func (h *HTTPServer) LogGetRequest(_ http.ResponseWriter, r *http.Request) Respo
 // 		400: GenericError
 // 		404: GenericError
 // 		500: GenericError
-func (h *HTTPServer) LogDeleteRequest(_ http.ResponseWriter, r *http.Request) Response {
+func (h *HTTPServer) EventDeleteRequest(_ http.ResponseWriter, r *http.Request) Response {
 	vars := mux.Vars(r)
-	alertLogIDRaw := vars["log_id"]
-	alertLogID, err := strconv.ParseInt(alertLogIDRaw, 10, 64)
+	id, err := strconv.ParseInt(vars["event_id"], 10, 64)
 	if err != nil {
 		return ValidationError(err)
 	}
 
-	al, err := models.GetLogByID(alertLogID)
+	al, err := models.GetEventByID(id)
 	if err != nil {
-		if models.IsErrLogNotExist(err) {
+		if models.IsErrEventNotExist(err) {
 			return Error(404, "Not Found", nil)
 		}
 		return InternalError(err)
 	}
 
-	err = models.DeleteLog(al)
+	err = models.DeleteEvent(al)
 	if err != nil {
 		return InternalError(err)
 	}

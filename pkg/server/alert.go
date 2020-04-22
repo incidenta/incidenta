@@ -91,32 +91,32 @@ func (h *HTTPServer) AlertDeleteRequest(_ http.ResponseWriter, r *http.Request) 
 	return Empty(204)
 }
 
-// swagger:route GET /v1/alert/{alert_id}/logs Alert ListAlertLogs
+// swagger:route GET /v1/alert/{alert_id}/events Alert ListAlertEvents
 //
-// Get logs operation
+// Get events operation
 //
 // 	Responses:
-// 		200: []Log
+// 		200: []Event
 // 		400: GenericError
 // 		500: GenericError
-func (h *HTTPServer) AlertLogsRequest(_ http.ResponseWriter, r *http.Request) Response {
+func (h *HTTPServer) AlertEventsRequest(_ http.ResponseWriter, r *http.Request) Response {
 	vars := mux.Vars(r)
 	id, err := strconv.ParseInt(vars["alert_id"], 10, 64)
 	if err != nil {
 		return ValidationError(err)
 	}
 
-	logs, _, err := models.SearchLogs(&models.SearchLogsOptions{
+	events, _, err := models.SearchEvents(&models.SearchEventsOptions{
 		AlertID: id,
 	})
 	if err != nil {
 		return InternalError(err)
 	}
 
-	var apiLogs []*apiv1.Log
-	for _, log := range logs {
-		apiLogs = append(apiLogs, log.APIFormat())
+	var apiEvents []*apiv1.Event
+	for _, event := range events {
+		apiEvents = append(apiEvents, event.APIFormat())
 	}
 
-	return JSON(200, apiLogs)
+	return JSON(200, apiEvents)
 }

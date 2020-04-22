@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// swagger:parameters GetAlert DeleteAlert ListAlertLogs
+// swagger:parameters GetAlert DeleteAlert ListAlertEvents
 type swaggerAlertOptions struct {
 	// in: path
 	AlertID int `json:"alert_id"`
@@ -57,12 +57,12 @@ func (a *Alerts) Delete(id int64) (*Response, error) {
 	return a.c.doRequest(req, nil)
 }
 
-func (a *Alerts) Logs(id int64) ([]*Log, *Response, error) {
-	req, err := a.c.newRequest(http.MethodGet, fmt.Sprintf("v1/alert/%d/logs", id), nil)
+func (a *Alerts) Events(id int64) ([]*Event, *Response, error) {
+	req, err := a.c.newRequest(http.MethodGet, fmt.Sprintf("v1/alert/%d/events", id), nil)
 	if err != nil {
 		return nil, nil, err
 	}
-	var logs []*Log
-	resp, err := a.c.doRequest(req, &logs)
-	return logs, resp, err
+	var events []*Event
+	resp, err := a.c.doRequest(req, &events)
+	return events, resp, err
 }

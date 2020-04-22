@@ -61,7 +61,7 @@ func (h *HTTPServer) AlertmanagerRequest(_ http.ResponseWriter, r *http.Request)
 				continue
 			}
 		} else {
-			_ = alertInt.SysLog(alert.Status, "")
+			_ = alertInt.SysEvent(alert.Status, "")
 		}
 		if alertInt.IsSnoozed() {
 			continue

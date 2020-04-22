@@ -39,15 +39,15 @@ func (h *HTTPServer) addRoutes() {
 	r.HandleFunc("/project/{project_id}", wrapper(h.ProjectDeleteRequest)).Methods("DELETE")
 	r.HandleFunc("/project/{project_id}/alerts", wrapper(h.ProjectAlertsRequest)).Methods("GET")
 
-	// Log
-	r.HandleFunc("/log/{log_id}", wrapper(h.LogGetRequest)).Methods("GET")
-	r.HandleFunc("/log/{log_id}", wrapper(h.LogDeleteRequest)).Methods("DELETE")
+	// Event
+	r.HandleFunc("/event/{event_id}", wrapper(h.EventGetRequest)).Methods("GET")
+	r.HandleFunc("/event/{event_id}", wrapper(h.EventDeleteRequest)).Methods("DELETE")
 
 	// Alert
 	r.HandleFunc("/alerts", wrapper(h.AlertListRequest)).Methods("GET")
 	r.HandleFunc("/alert/{alert_id}", wrapper(h.AlertGetRequest)).Methods("GET")
 	r.HandleFunc("/alert/{alert_id}", wrapper(h.AlertDeleteRequest)).Methods("DELETE")
-	r.HandleFunc("/alert/{alert_id}/logs", wrapper(h.AlertLogsRequest)).Methods("GET")
+	r.HandleFunc("/alert/{alert_id}/events", wrapper(h.AlertEventsRequest)).Methods("GET")
 
 	// Alertmanager
 	r.HandleFunc("/integrations/alertmanager/{project_uid}", wrapper(h.AlertmanagerRequest))
