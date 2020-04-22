@@ -26,6 +26,9 @@ func TestHTTPServer_AlertmanagerRequest(t *testing.T) {
 	})
 	assert.NoError(t, err)
 
+	_, _, err = te.client.Integrations.AlertmanagerEvent(project.UID+"foobar", &webhook.Message{})
+	assert.Error(t, err)
+
 	stats, _, err := te.client.Integrations.AlertmanagerEvent(project.UID, &webhook.Message{
 		Data: &template.Data{
 			Receiver: "main",

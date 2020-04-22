@@ -10,13 +10,14 @@ import (
 )
 
 type Log struct {
-	ID        int64 `xorm:"pk autoincr"`
-	ProjectID int64
-	Project   *Project `xorm:"-"`
-	AlertID   int64
-	Alert     *Alert `xorm:"-"`
-	Username  string
-	Comment   string
+	ID          int64 `xorm:"pk autoincr"`
+	ProjectID   int64
+	Project     *Project `xorm:"-"`
+	AlertID     int64
+	Alert       *Alert `xorm:"-"`
+	AlertStatus string
+	Username    string
+	Comment     string
 
 	CreatedUnix timeutil.TimeStamp `xorm:"INDEX created"`
 	UpdatedUnix timeutil.TimeStamp `xorm:"INDEX updated"`
@@ -24,13 +25,14 @@ type Log struct {
 
 func (l *Log) APIFormat() *apiv1.Log {
 	return &apiv1.Log{
-		ID:        l.ID,
-		ProjectID: l.ProjectID,
-		AlertID:   l.AlertID,
-		Username:  l.Username,
-		Comment:   l.Comment,
-		CreatedAt: l.CreatedUnix.AsTime(),
-		UpdatedAt: l.UpdatedUnix.AsTime(),
+		ID:          l.ID,
+		ProjectID:   l.ProjectID,
+		AlertID:     l.AlertID,
+		AlertStatus: l.AlertStatus,
+		Username:    l.Username,
+		Comment:     l.Comment,
+		CreatedAt:   l.CreatedUnix.AsTime(),
+		UpdatedAt:   l.UpdatedUnix.AsTime(),
 	}
 }
 
