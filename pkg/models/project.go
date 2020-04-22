@@ -103,7 +103,7 @@ func EditProject(p *Project) error {
 	if err != nil {
 		return err
 	} else if isExist {
-		return ErrProjectNotExist{Name: p.Name}
+		return ErrProjectAlreadyExist{Name: p.Name}
 	}
 	_, err = x.ID(p.ID).AllCols().Update(p)
 	return err
@@ -130,7 +130,7 @@ func CreateProject(p *Project) error {
 	if err != nil {
 		return err
 	} else if isExist {
-		return ErrProjectNotExist{Name: p.Name}
+		return ErrProjectAlreadyExist{Name: p.Name}
 	}
 
 	if _, err = sess.Insert(p); err != nil {

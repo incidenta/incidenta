@@ -16,9 +16,14 @@ angular.module('myApp', [
                 controller: 'HomeController',
             })
 
+            .when('/project-add', {
+                templateUrl: 'partials/views/project-add.html',
+                controller: 'ProjectAddController',
+            })
+
             .when('/project/:project_id', {
                 templateUrl: 'partials/views/project.html',
-                controller: 'ProjectController',
+                controller: 'ProjectViewController',
             })
 
             .otherwise('/');

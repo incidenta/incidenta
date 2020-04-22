@@ -1,6 +1,19 @@
 angular.module('myApp.controllers', [])
 
-    .controller('ProjectController', function ($scope, $routeParams, API) {
+    .controller('ProjectAddController', function ($scope, API) {
+        $scope.adding = false;
+        $scope.opts = {};
+        $scope.add = function() {
+            $scope.adding = true;
+            API.addProject($scope.opts)
+                .then(function (){
+                    $scope.adding = false;
+                    window.location = "#!/";
+                });
+        };
+    })
+
+    .controller('ProjectViewController', function ($scope, $routeParams, API) {
         $scope.projectLoaded = false;
         $scope.project = {};
 
@@ -24,6 +37,13 @@ angular.module('myApp.controllers', [])
                     if ($scope.alerts.length > 0) {
                         $scope.showEvents($scope.alerts[0]);
                     }
+                });
+        }
+
+        $scope.delete = function(project) {
+            API.deleteProject(project.id)
+                .then(function () {
+                    window.location = "#!/";
                 });
         }
 

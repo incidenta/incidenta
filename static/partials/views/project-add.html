@@ -1,0 +1,37 @@
+<md-toolbar class="md-site-toolbar-theme">
+    <div class="md-toolbar-tools">
+        <h2><a href="/"><md-icon md-font-set="material-icons">arrow_back</md-icon></a>&nbsp;Create a project</h2>
+    </div>
+</md-toolbar>
+
+<md-content class="doc-content">
+    <form name="proj">
+        <md-input-container>
+            <label>Name</label>
+            <input ng-disabled="adding" ng-model="opts.name" required>
+        </md-input-container>
+        <div layout-gt-sm="row">
+            <md-input-container>
+                <label>Description</label>
+                <textarea ng-disabled="adding" ng-model="opts.description"></textarea>
+            </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+            <md-input-container>
+                <label>Slack Channel</label>
+                <input ng-disabled="adding" ng-model="opts.slack_channel" required>
+            </md-input-container>
+            <md-input-container>
+                <label>Slack Webhook URL</label>
+                <input ng-disabled="adding" ng-model="opts.slack_url" required>
+            </md-input-container>
+        </div>
+        <div ng-show="adding">
+            <md-progress-circular md-diameter="20px" md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <div ng-show="!adding">
+            <md-button ng-disabled="!proj.$valid" ng-click="add()" class="md-primary">Create</md-button>
+            <md-button ng-href="/">Cancel</md-button>
+        </div>
+    </form>
+</md-content>
