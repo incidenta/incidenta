@@ -31,13 +31,22 @@
     <div flex-gt-sm="50">
         <md-content>
             <md-list>
+                <md-subheader class="md-no-sticky" ng-show="alert">Alert details</md-subheader>
+                <div class="md-padding">
+                    Fingerprint: {{ alert.fingerprint }}<br>
+                    Source: {{ alert.generator_url }}<br>
+                    Labels:<br>
+                    <pre>{{ alert.labels | prettyJSON }}</pre>
+                </div>
                 <md-subheader class="md-no-sticky">Logs</md-subheader>
-                <md-list-item class="md-3-line" ng-repeat="log in logs">
+                <md-list-item class="md-2-line" ng-repeat="log in logs">
                     <img ng-src="icons/watch.svg" class="md-avatar" alt="logo" />
                     <div class="md-list-item-text" layout="column">
-                        <h3>{{ log.created_at | date : 'dd.MM.yyyy, HH:mm:ss' }}</h3>
+                        <h3>{{ log.created_at | date : 'dd.MM.yyyy, HH:mm:ss' }}<span ng-if="log.alert_status.length > 0"> - {{ log.alert_status }}</span></h3>
                         <p>
-                            {{ log.comment }} {{ log.alert_status }}<br><small>{{ log.username }}</small>
+                            <span ng-if="log.comment.length > 0">{{ log.comment }}</span>
+                            <span ng-if="log.comment.length == 0">n/a</span>
+                            <small>– {{ log.username }}</small>
                         </p>
                     </div>
                 </md-list-item>

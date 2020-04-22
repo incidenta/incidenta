@@ -9,6 +9,7 @@ angular.module('myApp.controllers', [])
 
         $scope.project_id = $routeParams.project_id;
         $scope.logs = [];
+        $scope.alert = {};
 
         $scope.start = function() {
             API.getProject($scope.project_id)
@@ -21,16 +22,14 @@ angular.module('myApp.controllers', [])
                     $scope.alertsLoaded = true;
                     $scope.alerts = result.data;
                     if ($scope.alerts.length > 0) {
-                        API.getAlertLogs($scope.alerts[0].id)
-                            .then(function (result) {
-                                $scope.logs = result.data;
-                            });
+                        $scope.showLogs($scope.alerts[0]);
                     }
                 });
         }
 
         $scope.showLogs = function(alert) {
             $scope.logs = [];
+            $scope.alert = alert;
             API.getAlertLogs(alert.id)
                 .then(function (result) {
                     $scope.logs = result.data;
