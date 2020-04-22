@@ -6,7 +6,7 @@
 
 <md-toolbar ng-show="projectLoaded" class="md-site-toolbar-theme">
     <div class="md-toolbar-tools">
-        <h2><a href="/"><md-icon md-font-set="material-icons">arrow_back</md-icon></a>&nbsp;Project details</h2>
+        <h2><a href="/"><md-icon md-font-set="material-icons">arrow_back</md-icon></a>&nbsp;Project {{ project.name }} details</h2>
     </div>
 </md-toolbar>
 
@@ -15,7 +15,7 @@
         <md-content>
             <md-list>
                 <md-subheader class="md-no-sticky">Alerts</md-subheader>
-                <md-list-item class="md-3-line" ng-repeat="alert in alerts" ng-click="showLogs(alert)">
+                <md-list-item class="md-2-line" ng-repeat="alert in alerts" ng-click="showLogs(alert)">
                     <img ng-src="icons/fire.svg" class="md-avatar" alt="logo" />
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ alert.name }}</h3>
@@ -31,13 +31,8 @@
     <div flex-gt-sm="50">
         <md-content>
             <md-list>
-                <md-subheader class="md-no-sticky" ng-show="alert">Alert details</md-subheader>
-                <div class="md-padding">
-                    Fingerprint: {{ alert.fingerprint }}<br>
-                    Source: {{ alert.generator_url }}<br>
-                    Labels:<br>
-                    <pre>{{ alert.labels | prettyJSON }}</pre>
-                </div>
+                <md-subheader class="md-no-sticky" ng-show="alert">Labels</md-subheader>
+                <div class="md-padding"><pre>{{ alert.labels | prettyJSON }}</pre></div>
                 <md-subheader class="md-no-sticky">Logs</md-subheader>
                 <md-list-item class="md-2-line" ng-repeat="log in logs">
                     <img ng-src="icons/watch.svg" class="md-avatar" alt="logo" />

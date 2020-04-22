@@ -44,7 +44,7 @@ angular.module('myApp.controllers', [])
         $scope.loaded = false;
         $scope.projects = [];
 
-        $scope.start = function() {
+        $scope.refresh = function() {
             API.getProjects()
                 .then(function (result) {
                     $scope.loaded = true;
@@ -52,5 +52,5 @@ angular.module('myApp.controllers', [])
                 });
         }
 
-        $scope.start();
+        $scope.refresh();
     });
