@@ -14,14 +14,15 @@ type swaggerAlertOptions struct {
 
 // swagger:model
 type Alert struct {
-	ID          int64     `json:"id"`
-	Name        string    `json:"name"`
-	ProjectID   int64     `json:"project_id"`
-	Fingerprint string    `json:"fingerprint"`
-	Body        string    `json:"body"`
-	Snoozed     bool      `json:"snoozed"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	ID           int64             `json:"id"`
+	Name         string            `json:"name"`
+	ProjectID    int64             `json:"project_id"`
+	Fingerprint  string            `json:"fingerprint"`
+	Labels       map[string]string `json:"labels"`
+	Snoozed      bool              `json:"snoozed"`
+	CreatedAt    time.Time         `json:"created_at"`
+	UpdatedAt    time.Time         `json:"updated_at"`
+	GeneratorURL string            `json:"generator_url"`
 }
 
 type Alerts struct {
@@ -54,4 +55,14 @@ func (a *Alerts) Delete(id int64) (*Response, error) {
 		return nil, err
 	}
 	return a.c.doRequest(req, nil)
+}
+
+func (a *Alerts) Logs(id int64) ([]*Log, *Response, error) {
+	req, err := a.c.newRequest(http.MethodGet, fmt.Sprintf("v1/alert/%d/logs", id), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	var logs []*Log
+	resp, err := a.c.doRequest(req, &logs)
+	return logs, resp, err
 }

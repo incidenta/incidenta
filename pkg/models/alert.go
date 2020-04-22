@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/prometheus/alertmanager/template"
 	"xorm.io/builder"
 
 	apiv1 "github.com/incidenta/incidenta/pkg/api/v1"
@@ -11,12 +12,13 @@ import (
 )
 
 type Alert struct {
-	ID          int64 `xorm:"pk autoincr"`
-	Name        string
-	ProjectID   int64
-	Project     *Project `xorm:"-"`
-	Fingerprint string   `xorm:"INDEX NOT NULL"`
-	Body        string
+	ID           int64 `xorm:"pk autoincr"`
+	Name         string
+	ProjectID    int64
+	Project      *Project `xorm:"-"`
+	Fingerprint  string   `xorm:"INDEX NOT NULL"`
+	Labels       map[string]string
+	GeneratorURL string
 
 	SnoozedUnix timeutil.TimeStamp
 
@@ -26,14 +28,15 @@ type Alert struct {
 
 func (a *Alert) APIFormat() *apiv1.Alert {
 	return &apiv1.Alert{
-		ID:          a.ID,
-		Name:        a.Name,
-		ProjectID:   a.ProjectID,
-		Fingerprint: a.Fingerprint,
-		Body:        a.Body,
-		Snoozed:     a.IsSnoozed(),
-		CreatedAt:   a.CreatedUnix.AsTime(),
-		UpdatedAt:   a.UpdatedUnix.AsTime(),
+		ID:           a.ID,
+		Name:         a.Name,
+		ProjectID:    a.ProjectID,
+		Fingerprint:  a.Fingerprint,
+		Labels:       a.Labels,
+		GeneratorURL: a.GeneratorURL,
+		Snoozed:      a.IsSnoozed(),
+		CreatedAt:    a.CreatedUnix.AsTime(),
+		UpdatedAt:    a.UpdatedUnix.AsTime(),
 	}
 }
 
@@ -99,7 +102,7 @@ type SearchAlertsOptions struct {
 
 func (o *SearchAlertsOptions) toConds() builder.Cond {
 	cond := builder.NewCond()
-	if o.ProjectID >= 0 {
+	if o.ProjectID > 0 {
 		cond = cond.And(builder.Eq{"project_id": o.ProjectID})
 	}
 	return cond
@@ -160,4 +163,38 @@ func CreateAlert(a *Alert) error {
 		return err
 	}
 	return sess.Commit()
+}
+
+func CreateAlertFromAlertmanagerAlert(project *Project, alert template.Alert) (*Alert, error) {
+	name, ok := alert.Labels["alertname"]
+	if !ok {
+		name = "unnamed"
+	}
+	a := &Alert{
+		Name:         name,
+		ProjectID:    project.ID,
+		Fingerprint:  alert.Fingerprint,
+		Labels:       alert.Labels,
+		CreatedUnix:  timeutil.TimeStampNow(),
+		GeneratorURL: alert.GeneratorURL,
+	}
+	if err := CreateAlert(a); err != nil {
+		return nil, err
+	}
+	_ = a.SysLog(fmt.Sprintf("Created with %s status", alert.Status))
+	return a, nil
+}
+
+func (a *Alert) SysLog(comment string) error {
+	return a.Log("IncidentaBot", comment)
+}
+
+func (a *Alert) Log(username, comment string) error {
+	return CreateLog(&Log{
+		ProjectID:   a.ProjectID,
+		AlertID:     a.ID,
+		Username:    "IncidentaBot",
+		Comment:     comment,
+		CreatedUnix: timeutil.TimeStampNow(),
+	})
 }

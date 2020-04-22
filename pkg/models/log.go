@@ -78,10 +78,10 @@ type SearchLogsOptions struct {
 
 func (o *SearchLogsOptions) toConds() builder.Cond {
 	cond := builder.NewCond()
-	if o.ProjectID >= 0 {
+	if o.ProjectID > 0 {
 		cond = cond.And(builder.Eq{"project_id": o.ProjectID})
 	}
-	if o.AlertID >= 0 {
+	if o.AlertID > 0 {
 		cond = cond.And(builder.Eq{"alert_id": o.AlertID})
 	}
 	return cond

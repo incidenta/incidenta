@@ -114,3 +114,13 @@ func (p *Projects) List() ([]*Project, *Response, error) {
 	resp, err := p.c.doRequest(req, &projects)
 	return projects, resp, err
 }
+
+func (p *Projects) Alerts(id int64) ([]*Alert, *Response, error) {
+	req, err := p.c.newRequest(http.MethodGet, fmt.Sprintf("v1/project/%d/alerts", id), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	var alerts []*Alert
+	resp, err := p.c.doRequest(req, &alerts)
+	return alerts, resp, err
+}

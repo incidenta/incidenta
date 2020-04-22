@@ -18,9 +18,10 @@ const (
 )
 
 type Client struct {
-	Alerts   *Alerts
-	Logs     *Logs
-	Projects *Projects
+	Alerts       *Alerts
+	Logs         *Logs
+	Projects     *Projects
+	Integrations *Integrations
 
 	endpoint string
 	client   *http.Client
@@ -58,6 +59,7 @@ func newClient(httpClient *http.Client, endpoint string) *Client {
 	c.Alerts = &Alerts{c}
 	c.Logs = &Logs{c}
 	c.Projects = &Projects{c}
+	c.Integrations = &Integrations{c}
 
 	return c
 }
