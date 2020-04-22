@@ -165,7 +165,12 @@
           }
         ],
         "responses": {
-          "201": {},
+          "201": {
+            "description": "AlertmanagerResponse",
+            "schema": {
+              "$ref": "#/definitions/AlertmanagerResponse"
+            }
+          },
           "400": {
             "$ref": "#/responses/GenericError"
           },
@@ -440,10 +445,6 @@
     "Alert": {
       "type": "object",
       "properties": {
-        "body": {
-          "type": "string",
-          "x-go-name": "Body"
-        },
         "created_at": {
           "type": "string",
           "format": "date-time",
@@ -453,10 +454,21 @@
           "type": "string",
           "x-go-name": "Fingerprint"
         },
+        "generator_url": {
+          "type": "string",
+          "x-go-name": "GeneratorURL"
+        },
         "id": {
           "type": "integer",
           "format": "int64",
           "x-go-name": "ID"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-go-name": "Labels"
         },
         "name": {
           "type": "string",
@@ -475,6 +487,19 @@
           "type": "string",
           "format": "date-time",
           "x-go-name": "UpdatedAt"
+        }
+      },
+      "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
+    },
+    "AlertmanagerResponse": {
+      "type": "object",
+      "properties": {
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-name": "Errors"
         }
       },
       "x-go-package": "github.com/incidenta/incidenta/pkg/api/v1"
