@@ -1,9 +1,16 @@
 package command
 
 import (
-	apiv1 "github.com/incidenta/incidenta/pkg/api/v1"
+	"strings"
+	"time"
+
+	"github.com/prometheus/alertmanager/notify/webhook"
+	"github.com/prometheus/alertmanager/template"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+
+	apiv1 "github.com/incidenta/incidenta/pkg/api/v1"
+	"github.com/incidenta/incidenta/pkg/generate"
 )
 
 func newDemoCmd() *cobra.Command {
@@ -57,6 +64,45 @@ func demoRun(cmd *cobra.Command, _ []string) error {
 			return err
 		}
 		logrus.Infof("Project %q [uid=%s] created", project.Name, project.UID)
+		env := strings.TrimLeft(strings.ToLower(project.Name), "service ")
+		fingerprint, err := generate.GetRandomString(16)
+		if err != nil {
+			return err
+		}
+		alert := template.Alert{
+			Status: "firing",
+			Labels: map[string]string{
+				"alertname": "ServiceDown",
+				"instance":  "service.local",
+				"env":       env,
+			},
+			Annotations: map[string]string{
+				"summary": "ServiceDown @ service.local",
+			},
+			StartsAt:     time.Now(),
+			EndsAt:       time.Now().Add(10 * time.Minute),
+			GeneratorURL: "http://prometheus.local",
+			Fingerprint:  fingerprint,
+		}
+		_, _, err = cli.Integrations.AlertmanagerEvent(project.UID, &webhook.Message{
+			Data: &template.Data{
+				Alerts: []template.Alert{alert},
+			},
+		})
+		if err != nil {
+			return err
+		}
+		logrus.Info("Alertmanager event triggered")
+		alert.Status = "resolved"
+		_, _, err = cli.Integrations.AlertmanagerEvent(project.UID, &webhook.Message{
+			Data: &template.Data{
+				Alerts: []template.Alert{alert},
+			},
+		})
+		if err != nil {
+			return err
+		}
+		logrus.Info("Alertmanager event triggered")
 	}
 
 	return nil
