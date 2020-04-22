@@ -1,0 +1,47 @@
+<md-content ng-show="!projectLoaded" class="doc-content">
+    <p>
+        <md-progress-circular md-diameter="30px" md-mode="indeterminate"></md-progress-circular>
+    </p>
+</md-content>
+
+<md-toolbar ng-show="projectLoaded" class="md-site-toolbar-theme">
+    <div class="md-toolbar-tools">
+        <h2><a href="/"><md-icon md-font-set="material-icons">arrow_back</md-icon></a>&nbsp;Project details</h2>
+    </div>
+</md-toolbar>
+
+<div layout-gt-sm="row" ng-show="alertsLoaded" layout="column" class="doc-content">
+    <div flex-gt-sm="50">
+        <md-content>
+            <md-list>
+                <md-subheader class="md-no-sticky">Alerts</md-subheader>
+                <md-list-item class="md-3-line" ng-repeat="alert in alerts" ng-click="showLogs(alert)">
+                    <img ng-src="icons/fire.svg" class="md-avatar" alt="logo" />
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ alert.name }}</h3>
+                        <p>
+                            id: {{ alert.fingerprint }}
+                        </p>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </div>
+    <md-divider></md-divider>
+    <div flex-gt-sm="50">
+        <md-content>
+            <md-list>
+                <md-subheader class="md-no-sticky">Logs</md-subheader>
+                <md-list-item class="md-3-line" ng-repeat="log in logs">
+                    <img ng-src="icons/watch.svg" class="md-avatar" alt="logo" />
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ log.created_at | date : 'dd.MM.yyyy, HH:mm:ss' }}</h3>
+                        <p>
+                            {{ log.comment }} {{ log.alert_status }}<br><small>{{ log.username }}</small>
+                        </p>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </div>
+</div>

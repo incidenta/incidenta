@@ -15,6 +15,11 @@ angular.module('myApp', [
                 controller: 'HomeController',
             })
 
+            .when('/project/:project_id', {
+                templateUrl: 'partials/views/project.html',
+                controller: 'ProjectController',
+            })
+
             .otherwise('/');
 
         $locationProvider.html5Mode(false);
