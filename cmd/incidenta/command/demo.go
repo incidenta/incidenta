@@ -70,7 +70,7 @@ func demoRun(cmd *cobra.Command, _ []string) error {
 			return err
 		}
 		logrus.Infof("Project %q [uid=%s] created", project.Name, project.UID)
-		env := strings.TrimLeft(strings.ToLower(project.Name), "service ")
+		env := strings.TrimPrefix(strings.ToLower(project.Name), "service ")
 		for _, alertName := range alertNames {
 			fingerprint, err := generate.GetRandomString(16)
 			if err != nil {

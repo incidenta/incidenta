@@ -54,10 +54,11 @@ func (h *HTTPServer) addRoutes() {
 
 	// Telemetry
 	h.router.Handle("/metrics", promhttp.Handler())
+	h.router.HandleFunc("/healthz", wrapper(h.HealthzRequest))
 
 	// Static
 	h.router.PathPrefix("/").
-		Handler(http.FileServer(http.Dir("./static")))
+		Handler(http.FileServer(http.Dir(h.config.StaticAssets)))
 }
 
 func (h *HTTPServer) Serve() error {

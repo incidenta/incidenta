@@ -1,5 +1,6 @@
 package server
 
 type Config struct {
-	Addr string `envconfig:"SERVER_ADDR" default:":8080"`
+	StaticAssets string `envconfig:"STATIC_ASSETS" default:"static"`
+	Addr         string `envconfig:"SERVER_ADDR" default:":8080"`
 }

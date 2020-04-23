@@ -1,8 +1,9 @@
 package config
 
 import (
+	"encoding/json"
+
 	"github.com/kelseyhightower/envconfig"
-	"gopkg.in/yaml.v2"
 
 	"github.com/incidenta/incidenta/pkg/models"
 	"github.com/incidenta/incidenta/pkg/server"
@@ -21,6 +22,6 @@ func Environ() (Config, error) {
 }
 
 func (c *Config) String() string {
-	out, _ := yaml.Marshal(c)
+	out, _ := json.Marshal(c)
 	return string(out)
 }

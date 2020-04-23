@@ -47,7 +47,7 @@ func webRun(cmd *cobra.Command, _ []string) error {
 	logrus.Infof("Starting incidenta on %s...", cfg.Server.Addr)
 
 	if logrus.IsLevelEnabled(logrus.TraceLevel) {
-		fmt.Println(cfg.String())
+		logrus.Infoln("Configuration:", cfg.String())
 	}
 
 	if err := models.NewEngine(context.Background(), cfg.Database); err != nil {
