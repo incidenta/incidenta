@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: argoproj/argocd:latest
+          image: incidenta/incidenta:latest
           imagePullPolicy: Always
           command: [incidenta, web]
           ports:
