@@ -6,3 +6,6 @@
 /database.db
 /swagger.json
 /coverage.txt
+
+# Other
+/manifests/overlays/
