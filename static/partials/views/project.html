@@ -16,13 +16,18 @@
         <md-content>
             <md-list>
                 <md-subheader class="md-no-sticky">Alerts</md-subheader>
-                <md-list-item class="md-2-line" ng-repeat="alert in alerts" ng-click="showEvents(alert)">
+                <md-list-item class="md-2-line" ng-show="alerts.length > 0" ng-repeat="alert in alerts" ng-click="showEvents(alert)">
                     <img ng-src="icons/fire.svg" class="md-avatar" alt="logo" />
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ alert.name }}</h3>
                         <p>
                             id: {{ alert.fingerprint }}
                         </p>
+                    </div>
+                </md-list-item>
+                <md-list-item ng-show="alerts.length == 0">
+                    <div layout="row" layout-fill layout-align="center">
+                        <small class="disabled">No alerts.</small>
                     </div>
                 </md-list-item>
             </md-list>
@@ -33,9 +38,14 @@
         <md-content>
             <md-list>
                 <md-subheader class="md-no-sticky" ng-show="alert">Labels</md-subheader>
-                <div class="md-padding"><pre>{{ alert.labels | prettyJSON }}</pre></div>
+                <div class="md-padding" ng-show="alert.labels">
+                    <pre>{{ alert.labels | prettyJSON }}</pre>
+                </div>
+                <div class="md-padding" ng-hide="alert.labels">
+                    <pre>No labels.</pre>
+                </div>
                 <md-subheader class="md-no-sticky">Events</md-subheader>
-                <md-list-item class="md-2-line" ng-repeat="event in events">
+                <md-list-item class="md-2-line" ng-show="events.length > 0" ng-repeat="event in events">
                     <img ng-src="icons/watch.svg" class="md-avatar" alt="logo" />
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ event.created_at | date : 'dd.MM.yyyy, HH:mm:ss' }}<span ng-if="event.alert_status.length > 0"> - {{ event.alert_status }}</span></h3>
@@ -44,6 +54,11 @@
                             <span ng-if="event.comment.length == 0">n/a</span>
                             <small>– {{ event.username }}</small>
                         </p>
+                    </div>
+                </md-list-item>
+                <md-list-item ng-show="events.length == 0">
+                    <div layout="row" layout-fill layout-align="center">
+                        <small class="disabled">No events.</small>
                     </div>
                 </md-list-item>
             </md-list>

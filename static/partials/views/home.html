@@ -14,13 +14,18 @@
     <div flex-gt-sm="100">
         <md-content>
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="project in projects" ng-href="#!/project/{{ project.id }}">
+                <md-list-item class="md-3-line" ng-show="projects.length > 0" ng-repeat="project in projects" ng-href="#!/project/{{ project.id }}">
                     <img ng-src="icons/project.svg" class="md-avatar" alt="logo" />
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ project.name }}</h3>
                         <p>
                             {{ project.description }}
                         </p>
+                    </div>
+                </md-list-item>
+                <md-list-item ng-show="projects.length == 0">
+                    <div layout="row" layout-fill layout-align="center">
+                        <small class="disabled">No projects.</small>
                     </div>
                 </md-list-item>
             </md-list>

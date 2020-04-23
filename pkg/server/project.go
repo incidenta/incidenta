@@ -26,6 +26,9 @@ func (h *HTTPServer) ProjectListRequest(_ http.ResponseWriter, r *http.Request) 
 	if err != nil {
 		return InternalError(err)
 	}
+	if projects == nil {
+		return JSON(200, []*apiv1.Project{})
+	}
 	var apiProjects []*apiv1.Project
 	for _, project := range projects {
 		apiProjects = append(apiProjects, project.APIFormat())
@@ -225,6 +228,10 @@ func (h *HTTPServer) ProjectAlertsRequest(_ http.ResponseWriter, r *http.Request
 	alerts, _, err := models.SearchAlerts(opts)
 	if err != nil {
 		return InternalError(err)
+	}
+
+	if alerts == nil {
+		return JSON(200, []*apiv1.Alert{})
 	}
 
 	var apiAlerts []*apiv1.Alert

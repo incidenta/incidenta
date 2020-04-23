@@ -42,3 +42,7 @@ md-icon.success {
     margin-top: -2px;
     color: rgb(0, 199, 82) !important;
 }
+
+small.disabled {
+    color: rgba(0, 0, 0, 0.26);
+}

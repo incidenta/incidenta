@@ -113,6 +113,10 @@ func (h *HTTPServer) AlertEventsRequest(_ http.ResponseWriter, r *http.Request) 
 		return InternalError(err)
 	}
 
+	if events == nil {
+		return JSON(200, []*apiv1.Event{})
+	}
+
 	var apiEvents []*apiv1.Event
 	for _, event := range events {
 		apiEvents = append(apiEvents, event.APIFormat())
